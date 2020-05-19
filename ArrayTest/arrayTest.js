@@ -50,4 +50,31 @@ console.log(mapResult);
 let reverseData = [1,5,6,7,8,9,0];
 console.log(reverseData.reverse());
 
-// slice
+// slice 获取指定范围内的数组数据
+let sliceData = [12,56,23,4,5,6,76,67];
+console.log(sliceData.slice(1,5));
+
+// some 判断数组的的元素是否至少有一个负责提供函数的验证方法
+let someData = [3,8,9,2,3,4,5,6];
+const someFun = (item)=> {
+    return item > 10;
+}
+console.log(someData.some(someFun));
+
+// sort 对数组中的元素进行排序,a-b为从小到大排序，b-a为从大到小排序
+let sortData = [12,5,6,7,7,1,8,0,6,2,1,4,65,7,8];
+const sortFun = (a,b)=>{
+    return a - b;
+}
+console.log(sortData.sort(sortFun));
+
+// reduce 有2个必要参数 previous(上一个值)和current(当前值)，返回函数中计算的结果作为上一个值，当前索引为当前值
+let reduceData = [1,3,4,54,6,7,8,9];
+let reduceResultData = reduceData.reduce((previous,current)=>{
+    return previous + current;
+})
+console.log(reduceResultData);
+
+// copyWithin
+let copyArrData = [1,5,7,9,2,4];
+console.log(copyArrData.copyWithin(0,3,5));
