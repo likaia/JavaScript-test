@@ -1,7 +1,7 @@
-import Stack from "./lib/Stack.ts";
+import ObjStack from "./lib/ObjStack.ts";
 
 // 实例化一个栈
-const stack = new Stack();
+const stack = new ObjStack();
 
 // 入栈
 stack.push("第一条数据");
@@ -9,6 +9,8 @@ stack.push("第二条数据");
 
 // 出栈
 stack.pop();
+
+
 
 // 返回栈顶元素
 console.log(stack.peek());
