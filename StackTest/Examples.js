@@ -3,7 +3,6 @@ import ObjStack from "./lib/ObjStack.ts";
 
 // 十进制转二进制（数组栈）
 const decimalToBinary = function (decNumber) {
-    console.time("数组栈");
     // 实例化一个栈(数组栈)
     const stack = new Stack();
     // 传进来的十进制数
@@ -26,12 +25,10 @@ const decimalToBinary = function (decNumber) {
         binaryString += stack.pop().toString();
     }
     // 返回二进制结果
-    console.timeEnd("数组栈");
     return binaryString;
 }
 // 十进制转二进制（对象栈）
 const decimalToBinaryObjStack = function (decNumber) {
-
     // 实例化一个栈(数组栈)
     const stack = new ObjStack();
     // 传进来的十进制数
@@ -53,19 +50,20 @@ const decimalToBinaryObjStack = function (decNumber) {
     while (!stack.isEmpty()) {
         binaryString += stack.pop().toString();
     }
-    console.timeEnd("对象栈");
     // 返回二进制结果
     return binaryString;
 }
 
-const testObjNumber = 999989993232287;
-console.time("对象栈");
-console.log(decimalToBinaryObjStack(testObjNumber));
-console.timeEnd("对象栈");
 
 const testNumber = 999989993232287;
 console.time("数组栈");
 console.log(decimalToBinary(testNumber));
 console.timeEnd("数组栈");
+
+console.time("对象栈");
+const testObjNumber = 999989993232287;
+console.log(decimalToBinaryObjStack(testObjNumber));
+console.timeEnd("对象栈");
+
 
 
