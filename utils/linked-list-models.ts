@@ -4,7 +4,7 @@
 export class Node{
     private element: any;
     private next: any;
-
+    // 默认传一个元素进来
     constructor (element: any) {
         this.element = element;
         this.next = undefined;
