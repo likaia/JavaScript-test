@@ -25,21 +25,22 @@ export default class LinkedList{
 
     // 链表尾部添加元素
     push(element: any) {
-        //　创建节点，将元素当作值传入
+        // 声明结点变量，将元素当作参数传入生成结点
         const node = new Node(element);
+        // 存储遍历到的链表元素
         let current;
         if(this.head==null){
-            // 链表为空，让head指向node，下一个node元素就会为undefined
+            // 链表为空，直接将链表头部赋值为结点变量
             this.head = node;
         }else{
             // 链表不为空，我们只能拿到链表中第一个元素的引用
             current = this.head;
-            // 我们需要循环访问链表
+            // 循环访问链表
             while (current.next !=null){
-                // 赋值
+                // 赋值遍历到的元素
                 current = current.next;
             }
-            // 此时已经得到了链表的最后一个元素(null)，将链表的下一个元素指定为当前node结点。
+            // 此时已经得到了链表的最后一个元素(null)，将链表的下一个元素赋值为结点变量。
             current.next = node;
         }
         // 链表长度自增
@@ -97,16 +98,18 @@ export default class LinkedList{
     insert(element: any, index: number) {
         // 参数有效性判断
         if(index >= 0 && index <= this.count){
+            // 声明节点变量，将当前要插入的元素作为参数生成结点
             const node = new Node(element);
             // 第一个位置添加元素
             if(index === 0){
-                // 将链表头部元素指向node的下一个结点
+                // 将节点变量(node)的下一个元素指向链表的头部元素
                 node.next = this.head;
+                // 链表头部元素赋值为节点变量
                 this.head = node;
             }else {
                 // 获取目标结点的上一个结点
                 const previous = this.getElementAt(index - 1);
-                // node.next指向目标结点
+                // 将节点变量的下一个元素指向目标节点
                 node.next = previous.next;
                 /**
                  * 此时node中当前结点为要插入的值
