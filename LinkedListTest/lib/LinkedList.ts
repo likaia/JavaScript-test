@@ -10,10 +10,10 @@ interface equalsFnType {
 
 export default class LinkedList{
     // 声明链表内需要的变量并定义其类型
-    private count: number;
-    private next: any;
-    private equalsFn: equalsFnType;
-    private head: any;
+    protected count: number;
+    protected next: any;
+    protected equalsFn: equalsFnType;
+    protected head: any;
 
     constructor(equalsFn = defaultEquals) {
         // 初始化链表内部变量
@@ -147,6 +147,11 @@ export default class LinkedList{
     remove(element: any) {
         // 获取element的索引,移除索引位置的元素
         this.removeAt(this.indexOf(element))
+    }
+
+    clear(){
+        this.head = undefined;
+        this.count = 0;
     }
 
     // 获取链表长度

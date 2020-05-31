@@ -4,9 +4,21 @@
 export class Node{
     element: any;
     next: any;
-    // 默认传一个元素进来
-    constructor (element: any) {
+    // next为可选参数，如果不传则为undefined
+    constructor (element: any, next?: any) {
         this.element = element;
-        this.next = undefined;
+        this.next = next;
+    }
+}
+
+// 助手类：用于表示双向链表中的结点元素
+export class DoublyNode extends Node{
+    prev: any;
+
+    constructor(element: any, next?: any, prev?: any) {
+        // 调用Node类的构造函数
+        super(element,next);
+        // 新增prev属性，指向链表元素的上一个元素
+        this.prev = prev;
     }
 }
