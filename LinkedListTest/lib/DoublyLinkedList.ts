@@ -1,19 +1,15 @@
 // @ts-ignore
-import LinkedList from "./LinkedList.ts";
+import LinkedList from "./LinkedList";
 // @ts-ignore
 import { defaultEquals } from "../../utils/Util.ts";
 // @ts-ignore
 import { DoublyNode } from "../../utils/linked-list-models.ts"
 
 export default class DoublyLinkedList extends LinkedList{
-    protected count: number;
-    protected head: any;
     private tail: any;
     constructor(equalsFn = defaultEquals) {
         // 调用Node类的构造函数
         super(equalsFn);
-        this.count = 0;
-        this.head = null;
         // 新增属性，用于指向链表的最后一个元素
         this.tail = undefined;
     }
