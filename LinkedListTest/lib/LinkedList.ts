@@ -4,15 +4,15 @@ import {defaultEquals} from "../../utils/Util.ts";
 import {Node} from "../../utils/linked-list-models.ts";
 
 // 定义验证函数要传的参数和返回结果
-interface equalsFnType {
-    (a: any,b: any) : boolean;
+interface equalsFnType<T> {
+    (a: T,b: T) : boolean;
 }
 
-export default class LinkedList{
+export default class LinkedList<T>{
     // 声明链表内需要的变量并定义其类型
     protected count: number;
     protected next: any;
-    protected equalsFn: equalsFnType;
+    protected equalsFn: equalsFnType<T>;
     protected head: any;
 
     constructor(equalsFn = defaultEquals) {
@@ -24,7 +24,7 @@ export default class LinkedList{
     }
 
     // 链表尾部添加元素
-    push(element: any) {
+    push(element: T) {
         // 声明结点变量，将元素当作参数传入生成结点
         const node = new Node(element);
         // 存储遍历到的链表元素
@@ -95,7 +95,7 @@ export default class LinkedList{
     }
 
     // 向链表中插入元素
-    insert(element: any, index: number) {
+    insert(element: T, index: number) {
         // 参数有效性判断
         if(index >= 0 && index <= this.count){
             // 声明节点变量，将当前要插入的元素作为参数生成结点
@@ -126,7 +126,7 @@ export default class LinkedList{
     }
 
     // 根据元素获取其在链表中的索引
-    indexOf(element: any) {
+    indexOf(element: T) {
         // 获取链表顶部元素
         let current = this.head;
         // 遍历链表内的元素
@@ -144,7 +144,7 @@ export default class LinkedList{
     }
 
     // 移除链表中的指定元素
-    remove(element: any) {
+    remove(element: T) {
         // 获取element的索引,移除索引位置的元素
         this.removeAt(this.indexOf(element))
     }

@@ -5,13 +5,13 @@ import {defaultEquals} from "../../utils/Util.ts";
 // @ts-ignore
 import {Node} from "../../utils/linked-list-models.ts";
 
-export default class CircularLinkedList extends LinkedList{
+export default class CircularLinkedList<T> extends LinkedList{
     constructor(equalsFn = defaultEquals) {
         super(equalsFn);
     }
 
     // 重写insert函数
-    insert(element: any, index: number) {
+    insert(element: T, index: number) {
         if(index >= 0 && index <= this.count){
             // 声明结点变量
             const node = new Node(element);
@@ -46,7 +46,7 @@ export default class CircularLinkedList extends LinkedList{
     }
 
     // 重写removeAt方法
-    removeAt(index: number): any {
+    removeAt(index: number): T {
         if(index >= 0 && index < this.count){
             let current = this.head;
             if (index === 0){

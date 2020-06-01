@@ -1,11 +1,11 @@
 // @ts-ignore
-import LinkedList from "./LinkedList";
+import LinkedList from "./LinkedList.ts";
 // @ts-ignore
 import { defaultEquals } from "../../utils/Util.ts";
 // @ts-ignore
 import { DoublyNode } from "../../utils/linked-list-models.ts"
 
-export default class DoublyLinkedList extends LinkedList{
+export default class DoublyLinkedList<T> extends LinkedList<T>{
     private tail: any;
     constructor(equalsFn = defaultEquals) {
         // 调用Node类的构造函数
@@ -14,7 +14,7 @@ export default class DoublyLinkedList extends LinkedList{
         this.tail = undefined;
     }
 
-    push(element: any) {
+    push(element: T) {
         // 创建双向链表辅助结点
         const node = new DoublyNode(element);
         if (this.head == null){
@@ -34,7 +34,7 @@ export default class DoublyLinkedList extends LinkedList{
     }
 
     // 重写insert方法
-    insert(element: any, index: number) {
+    insert(element: T, index: number) {
         // 参数有效性判断
         if(index >=0 && index <= this.count){
             // 创建结点
