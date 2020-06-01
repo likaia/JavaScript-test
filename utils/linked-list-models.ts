@@ -1,18 +1,18 @@
 /* 链表需要的模块类 */
 
 // 助手类: 用于表示链表中的第一个以及其他元素
-export class Node{
+export class Node<T>{
     element: any;
     next: any;
     // next为可选参数，如果不传则为undefined
-    constructor (element: any, next?: any) {
+    constructor (element: T, next?: any) {
         this.element = element;
         this.next = next;
     }
 }
 
 // 助手类：用于表示双向链表中的结点元素
-export class DoublyNode extends Node{
+export class DoublyNode<T> extends Node<T>{
     prev: any;
 
     constructor(element: any, next?: any, prev?: any) {
