@@ -1,8 +1,5 @@
-// @ts-ignore
 import LinkedList from "./LinkedList.ts";
-// @ts-ignore
 import { defaultEquals } from "../../utils/Util.ts";
-// @ts-ignore
 import { DoublyNode } from "../../utils/linked-list-models.ts"
 
 export default class DoublyLinkedList<T> extends LinkedList<T>{

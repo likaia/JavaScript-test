@@ -1,11 +1,8 @@
-// @ts-ignore
 import LinkedList from "./LinkedList.ts";
-// @ts-ignore
 import {defaultEquals} from "../../utils/Util.ts";
-// @ts-ignore
 import {Node} from "../../utils/linked-list-models.ts";
 
-export default class CircularLinkedList<T> extends LinkedList{
+export default class CircularLinkedList<T> extends LinkedList<T>{
     constructor(equalsFn = defaultEquals) {
         super(equalsFn);
     }
@@ -46,7 +43,7 @@ export default class CircularLinkedList<T> extends LinkedList{
     }
 
     // 重写removeAt方法
-    removeAt(index: number): T {
+    removeAt(index: number): any {
         if(index >= 0 && index < this.count){
             let current = this.head;
             if (index === 0){

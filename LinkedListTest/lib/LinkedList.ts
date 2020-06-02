@@ -1,6 +1,4 @@
-// @ts-ignore
 import {defaultEquals} from "../../utils/Util.ts";
-// @ts-ignore
 import {Node} from "../../utils/linked-list-models.ts";
 
 // 定义验证函数要传的参数和返回结果

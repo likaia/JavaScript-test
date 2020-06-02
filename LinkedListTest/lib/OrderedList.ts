@@ -1,6 +1,4 @@
-// @ts-ignore
 import LinkedList from "./LinkedList.ts";
-// @ts-ignore
 import { defaultEquals } from "../../utils/Util.ts";
 
 const Compare = {
