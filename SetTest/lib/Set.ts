@@ -61,7 +61,7 @@ export default class Set<T>{
 
     // 并集
     union(otherSet: Set<T>){
-        // 声明交集变量
+        // 声明并集变量
         const unionSet = new Set();
         this.values().forEach(value => unionSet.add(value));
         otherSet.values().forEach(value => unionSet.add(value));
@@ -70,7 +70,7 @@ export default class Set<T>{
 
     // 交集
     intersection(otherSet: Set<T>) {
-        // 声明并集变量
+        // 声明交集变量
         const intersectionSet = new Set();
         // 获取当前实例集合中的元素
         const values  = this.values();
