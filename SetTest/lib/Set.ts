@@ -118,7 +118,7 @@ export default class Set<T>{
 
         let isSubset = true;
         this.values().every(value => {
-            if(otherSet.has(value)){
+            if(!otherSet.has(value)){
                 isSubset = false;
                 return false;
             }
