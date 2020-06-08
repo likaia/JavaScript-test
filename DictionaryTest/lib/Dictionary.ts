@@ -1,11 +1,7 @@
 import {defaultToString} from "../../utils/Util.ts";
 import {ValuePair} from "../../utils/dictionary-list-models.ts";
 
-interface callbackFnType {
-    (key: string,value: any): any;
-}
-
-export default class Dictionary<K,V>{
+export default class Dictionary<K extends string,V>{
     private table: { [key:string]: ValuePair<K,V> };
 
     constructor(private toStrFn: (key: K) => string = defaultToString) {
@@ -49,7 +45,7 @@ export default class Dictionary<K,V>{
         // return (<any>Object).values(this.table);
         const valuePairs = [];
         for (const key in this.table){
-            if (this.table.hasOwnProperty(key) && this.hasKey(key)){
+            if (this.table.hasOwnProperty(key) && this.hasKey(key as K)){
                 valuePairs.push(this.table[key]);
             }
         }
