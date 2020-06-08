@@ -71,7 +71,7 @@ export default class Set<T>{
     // 交集
     intersection(otherSet: Set<T>) {
         // 声明交集变量
-        const intersectionSet = new Set();
+        const intersectionSet = new Set<T>();
         // 获取当前实例集合中的元素
         const values  = this.values();
         // 获取另一个集合中的元素
@@ -87,7 +87,7 @@ export default class Set<T>{
         }
         // 遍历元素最少的集合数组，节约性能开销
         smallerSet.forEach(value => {
-           if (biggerSet.includes(value)){
+           if ((<any>biggerSet).includes(value)){
                intersectionSet.add(value);
            }
         });

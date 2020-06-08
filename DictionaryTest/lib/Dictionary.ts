@@ -1,35 +1,24 @@
 import {defaultToString} from "../../utils/Util.ts";
 import {ValuePair} from "../../utils/dictionary-list-models.ts";
 
-
-interface toStrFnType {
-    (item: string): string;
-}
-
-interface tableType {
-    [propName: string]: any;
-}
-
 interface callbackFnType {
     (key: string,value: any): any;
 }
 
-export default class Dictionary<T>{
-    private toStrFn: toStrFnType;
-    private table: tableType;
+export default class Dictionary<K,V>{
+    private table: { [key:string]: ValuePair<K,V> };
 
-    constructor(toStrFn = defaultToString) {
-        this.toStrFn = toStrFn;
+    constructor(private toStrFn: (key: K) => string = defaultToString) {
         this.table = {};
     }
 
     // 判断字典中是否包含某个key
-    hasKey(key: string){
+    hasKey(key: K){
         return this.table[this.toStrFn(key)] != null;
     }
 
     // 向字典中添加元素
-    set(key: string, value: any){
+    set(key: K, value: V){
         if(key != null && value != null){
             // 将key转为字符串，字典中需要的key为字符串形式
             const tableKey = this.toStrFn(key);
@@ -40,7 +29,7 @@ export default class Dictionary<T>{
     }
 
     // 从字典中移除一个值
-    remove(key: string) {
+    remove(key: K) {
         if (this.hasKey(key)){
             delete this.table[this.toStrFn(key)];
             return true;
@@ -48,27 +37,27 @@ export default class Dictionary<T>{
         return false;
     }
 
-    // 从字典中获取一个值 Possible iteration over unexpected (custom / inherited) members, probably missing hasOwnProperty check
-    get(key: string){
+    // 从字典中获取一个值
+    get(key: K) {
         const valuePair = this.table[this.toStrFn(key)];
         return valuePair == null ? undefined : valuePair.value;
     }
 
     // 获取字典中存储的所有对象
-    keyValues() {
+    keyValues(): ValuePair<K, V>[] {
         /* 使用ES2017引入的Object.values方法可以直接获取对象里存储的所有对应key的value值存进数组中 */
-        // return Object.values(this.table);
+        // return (<any>Object).values(this.table);
         const valuePairs = [];
-        for (const k in this.table){
-            if (this.table.hasOwnProperty(k) && this.hasKey(k)){
-                valuePairs.push(this.table[k]);
+        for (const key in this.table){
+            if (this.table.hasOwnProperty(key) && this.hasKey(key)){
+                valuePairs.push(this.table[key]);
             }
         }
         return valuePairs;
     }
 
     // 获取字典中的所有键
-    keys() {
+    keys(): K[] {
         // 可以直接使用map获取对象的key
         // return this.keyValues().map(valuePair=> valuePair.key);
         const keys = [];
@@ -80,7 +69,7 @@ export default class Dictionary<T>{
     }
 
     // 获取字典中的所有值
-    values() {
+    values(): V[] {
         const values = [];
         const valuePairs = this.keyValues();
         for (let i = 0; i < valuePairs.length; i++){
@@ -90,7 +79,7 @@ export default class Dictionary<T>{
     }
 
     // 迭代字典中的每个键值对
-    forEach(callbackFn: callbackFnType){
+    forEach(callbackFn: (key: K, value: V) => any){
         const valuePairs = this.keyValues();
         for (let i = 0; i < valuePairs.length; i++){
             const result = callbackFn(valuePairs[i].key,valuePairs[i].value);
