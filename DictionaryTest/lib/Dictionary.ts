@@ -3,7 +3,7 @@ import {ValuePair} from "../../utils/dictionary-list-models.ts";
 import Map from "./Map.ts";
 
 export default class Dictionary<K extends string, V> implements Map<K, V> {
-    table: { [key: string]: ValuePair<K, V> };
+    private table: { [key: string]: ValuePair<K, V> };
 
     constructor(private toStrFn: (key: K) => string = defaultToString) {
         this.table = {};
