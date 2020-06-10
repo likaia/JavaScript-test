@@ -5,7 +5,6 @@ export default interface Map<K,V> {
     set?(key: K, value: V): boolean;
     put?(key: K, value: V): boolean;
     hashCode?(key: K): number;
-    loseloseHashCode?(key: K): number;
     remove(key: K): boolean;
     get(key: K): V|undefined;
     keyValues(): ValuePair<K, V>[];

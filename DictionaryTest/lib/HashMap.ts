@@ -3,7 +3,7 @@ import {defaultToString} from "../../utils/Util.ts";
 import Map from "./Map.ts";
 
 export class HashMap<K,V> implements Map<K, V>{
-    private table:{ [key:string]: ValuePair<K, V> };
+    private table:{ [key:number]: ValuePair<K, V> };
     constructor(private toStrFn: (key: K) => string = defaultToString) {
         this.table = {};
     }
@@ -24,7 +24,7 @@ export class HashMap<K,V> implements Map<K, V>{
 
     // 生成散列哈希码
     loseloseHashCode(key: K): number {
-        if (typeof key === "number") {
+        if (typeof key === "number"){
             return key;
         }
         const tableKey = this.toStrFn(key);
@@ -37,9 +37,17 @@ export class HashMap<K,V> implements Map<K, V>{
     }
 
     clear(): void {
+        this.table= {};
     }
 
     forEach(callbackFn: (key: K, value: V) => any): void {
+        const valuePairs = this.keyValues();
+        for (let i = 0; i < valuePairs.length; i++){
+            const result = callbackFn(valuePairs[i].key,valuePairs[i].value);
+            if (result === false) {
+                break;
+            }
+        }
     }
 
     get(key: K): V|undefined {
@@ -48,36 +56,64 @@ export class HashMap<K,V> implements Map<K, V>{
     }
 
     hasKey(key: K): boolean {
-        return false;
+        return this.table[this.hashCode(key)] != null;
     }
 
     isEmpty(): boolean {
-        return false;
+        return this.values().length === 0;
     }
 
     keyValues(): ValuePair<K, V>[] {
-        return [];
+        const valuePairs = [];
+        // 获取对象中的所有key并将其转为int类型数组
+        const keys = Object.keys(this.table).map(item => parseInt(item));
+        for (let i = 0; i < keys.length; i++){
+            valuePairs.push(this.table[keys[i]]);
+        }
+        return valuePairs;
     }
 
     keys(): K[] {
-        return [];
+        const keys = [];
+        const valuePairs = this.keyValues();
+        for (let i = 0; i < valuePairs.length; i++){
+            keys.push(valuePairs[i].key);
+        }
+        return keys;
     }
 
     remove(key: K): boolean {
-        const hash = this.hashCode(key);
-        const valuePair = this.table[hash];
-        if (valuePair != null){
-            delete this.table[hash];
+        if(this.hasKey(key)){
+            delete this.table[this.hashCode(key)];
             return true;
         }
         return false;
     }
 
     size(): number {
-        return 0;
+        return this.keyValues().length;
     }
 
     values(): V[] {
-        return [];
+        const values = [];
+        const valuePairs = this.keyValues();
+        for (let i = 0; i < valuePairs.length; i++){
+            values.push(valuePairs[i].value);
+        }
+        return values;
+    }
+
+    toString(): string {
+        if (this.isEmpty()){
+            return ``
+        }
+
+        const valuePairs = this.keyValues();
+        console.log(valuePairs);
+        let objString = `${valuePairs[0].toString()}`;
+        for (let i = 1; i < valuePairs.length; i++){
+            objString = `${objString},${valuePairs[i].toString()}`;
+        }
+        return objString;
     }
 }

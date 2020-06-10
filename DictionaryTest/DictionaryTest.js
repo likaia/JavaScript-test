@@ -8,7 +8,7 @@ console.log("判断name是否在dictionary中",dictionary.hasKey("name"));
 // 移除名为id的key
 dictionary.remove("id");
 console.log("判断id是否为dictionary中",dictionary.hasKey("id"));
-console.log(dictionary.toString())
+console.log("将字典中存储的数据转为字符串",dictionary.toString())
 // 获取dictionary中名为name的值
 console.log("dictionary中名为name的值",dictionary.get("name"));
 // 获取字典中所有存储的值
