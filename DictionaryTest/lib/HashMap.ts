@@ -109,7 +109,6 @@ export class HashMap<K,V> implements Map<K, V>{
         }
 
         const valuePairs = this.keyValues();
-        console.log(valuePairs);
         let objString = `${valuePairs[0].toString()}`;
         for (let i = 1; i < valuePairs.length; i++){
             objString = `${objString},${valuePairs[i].toString()}`;
