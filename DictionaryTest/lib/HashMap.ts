@@ -4,7 +4,7 @@ import Map from "./Map.ts";
 
 export class HashMap<K,V> implements Map<K, V>{
     private table:{ [key:number]: ValuePair<K, V> };
-    constructor(private toStrFn: (key: K) => string = defaultToString) {
+    constructor(protected toStrFn: (key: K) => string = defaultToString) {
         this.table = {};
     }
 
