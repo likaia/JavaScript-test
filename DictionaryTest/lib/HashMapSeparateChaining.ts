@@ -3,7 +3,7 @@ import {defaultToString} from "../../utils/Util.ts";
 import {HashMap} from "./HashMap.ts";
 import LinkedList from "../../LinkedListTest/lib/LinkedList.ts";
 
-export default class HashMapSeparateChaining<K,V> extends HashMap<K, V>{
+export default class HashMapSeparateChaining<K,V> extends HashMap<K, V> {
     private tableLink:{ [key: number]: LinkedList<ValuePair<K, V>> };
     constructor(protected toStrFn: (key: K) => string = defaultToString) {
         super(toStrFn);
@@ -14,15 +14,19 @@ export default class HashMapSeparateChaining<K,V> extends HashMap<K, V>{
         if (key != null && value != null) {
             const position = this.hashCode(key);
             if (this.tableLink[position] == null){
+                // 如果当前要添加元素的位置为空则创建一个链表
                 this.tableLink[position] = new LinkedList<ValuePair<K, V>>();
             }
+            // 往当前要添加元素的链表中添加当前当前元素
             this.tableLink[position].push(new ValuePair(key,value));
             return true;
         }
         return false;
     }
 
+    // 获取链表中的值 
     get(key: K): V | undefined {
+
         const position = this.hashCode(key);
         const linkedList = this.tableLink[position];
         if (linkedList !=null && !linkedList.isEmpty()){
