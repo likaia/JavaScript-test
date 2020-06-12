@@ -3,7 +3,7 @@ import {defaultToString} from "../../utils/Util.ts";
 import Map from "./Map.ts";
 
 export class HashMap<K,V> implements Map<K, V>{
-    private table:{ [key:number]: ValuePair<K, V> };
+    protected table:{ [key:number]: ValuePair<K, V> };
     constructor(protected toStrFn: (key: K) => string = defaultToString) {
         this.table = {};
     }
@@ -19,10 +19,10 @@ export class HashMap<K,V> implements Map<K, V>{
 
     // 生成哈希码
     hashCode(key: K): number {
-        return this.loseloseHashCode(key);
+        return this.djb2HashCode(key);
     }
 
-    // 生成散列哈希码
+    // loselose实现哈希函数
     loseloseHashCode(key: K): number {
         if (typeof key === "number"){
             return key;
@@ -34,6 +34,17 @@ export class HashMap<K,V> implements Map<K, V>{
             hash += tableKey.charCodeAt(i);
         }
         return hash % 37;
+    }
+
+    // djb2实现哈希函数
+    djb2HashCode(key: K): number {
+        // 将参数转为字符串
+        const tableKey = this.toStrFn(key);
+        let hash = 5381;
+        for (let i = 0; i < tableKey.length; i++){
+            hash = (hash * 33) + tableKey.charCodeAt(i);
+        }
+        return hash % 1013;
     }
 
     clear(): void {
