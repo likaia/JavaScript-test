@@ -38,6 +38,10 @@ export class HashMap<K,V> implements Map<K, V>{
 
     // djb2实现哈希函数
     djb2HashCode(key: K): number {
+        if (typeof key === "number"){
+            return key;
+        }
+
         // 将参数转为字符串
         const tableKey = this.toStrFn(key);
         let hash = 5381;

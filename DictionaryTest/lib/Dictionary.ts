@@ -44,7 +44,7 @@ export default class Dictionary<K, V> implements Map<K, V> {
     keyValues(): ValuePair<K, V>[] {
         /* 使用ES2017引入的Object.values方法可以直接获取对象里存储的所有对应key的value值存进数组中 */
         const valuePairs = [];
-        const keys = Object.keys(this.table).map(item => parseInt(item));
+        const keys = Object.keys(this.table);
         for (let i = 0; i < keys.length; i++){
             valuePairs.push(this.table[keys[i]])
         }

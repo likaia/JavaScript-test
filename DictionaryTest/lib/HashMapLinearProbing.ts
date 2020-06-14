@@ -9,7 +9,6 @@ export default class HashMapLinearProbing<K,V> extends HashMap<K, V>{
     put(key: K, value: V): boolean {
         if (key != null && value!= null){
             const position = this.hashCode(key);
-            console.log(`当前插入元素key: ${key}, hash = ${position}`)
             // 判断当前要插入的位置在表中是否被占据
             if (this.table[position] == null){
                 // 当前位置没有被占据，将Key & value放进ValuePair中赋值给当前表中要插入位置的元素
@@ -84,7 +83,6 @@ export default class HashMapLinearProbing<K,V> extends HashMap<K, V>{
             if (posHash <= hash || posHash <= removedPosition){
                 // 如果当前遍历到的元素的哈希值小于等于被删除元素的哈希值或者小于等于上一个被移除key的哈希值(removedPosition)
                 // 需要将当前元素移动至removedPosition位置
-                console.log(`调整元素位置: ${removedPosition} = ${index}`);
                 this.table[removedPosition] = this.table[index];
                 // 移动完成后，删除当前index位置的元素
                 delete this.table[index];
