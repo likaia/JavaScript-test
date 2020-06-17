@@ -43,3 +43,47 @@ const factorialRecursionOptimization = function (number) {
 
 const result = factorialRecursionOptimization(5);
 console.log("5的阶乘为: ",result)
+
+// 测试递归多少次就爆栈
+/*let i = 0;
+function recursiveFn() {
+    i++;
+    recursiveFn();
+}
+
+try {
+    recursiveFn();
+}catch (e) {
+    console.log('i = ' + i + ' error: ' + e);
+}*/
+
+// 求特定位置的斐波那契数
+const fibonacciNumbers = function (index) {
+    // 0号位置的斐波那契数是0
+    if (index < 1) return 0;
+    // 1号和2号位置的斐波那契数是1
+    if (index <= 2) return 1;
+    // n - 1位置
+    let prev = 1;
+    // n - 2位置
+    let prevTwo = 0;
+    let result = index;
+    for (let i = 2; i <= index; i++){
+        // n(此处n>2)号位置的斐波那契数是(n-1)的斐波那契数 + (n - 2)的斐波那契数
+        result = prev + prevTwo;
+        // n-2位置的值就是prev
+        prevTwo = prev;
+        // n-1位置的值就是result
+        prev = result;
+    }
+    return result;
+}
+
+// 求特定位置的斐波那契数(递归)
+const fibonacciNumbersRecursive = function(index){
+    // 递归终止条件
+    if (index < 1) return 0;
+    if (index <= 2) return 1;
+    return fibonacciNumbersRecursive(index - 1) + fibonacciNumbersRecursive(index - 2);
+}
+console.log("斐波那契数测试", fibonacciNumbersRecursive(7));
