@@ -86,4 +86,15 @@ const fibonacciNumbersRecursive = function(index){
     if (index <= 2) return 1;
     return fibonacciNumbersRecursive(index - 1) + fibonacciNumbersRecursive(index - 2);
 }
-console.log("斐波那契数测试", fibonacciNumbersRecursive(7));
+
+// 求特定位置的斐波那契数(记忆化递归)
+const fibonacciNumbersMemoryRecursive = function () {
+    const memory = [0,1];
+    const fibonacci = function (n) {
+        if (memory[n] !=null) return memory[n];
+        return memory[n] = fibonacci(n-1,memory) + factorial(n-2,memory);
+    }
+    return fibonacci;
+};
+
+console.log("斐波那契数测试", fibonacciNumbersRecursive(5));
