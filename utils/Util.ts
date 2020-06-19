@@ -1,10 +1,17 @@
 // 常用函数工具类
-// 校验函数
+
+export type ICompareFunction<T> = (a: T, b: T) => number;
+
+export enum Compare {
+    LESS_THAN = -1,
+    BIGGER_THAN = 1,
+    EQUALS = 0
+}
+
 export function defaultEquals(a: any,b: any) {
     return a === b;
 }
 
-// 任意类型转字符串函数
 export function defaultToString(item: any) {
     if (item === null){
         return "null";
@@ -15,3 +22,14 @@ export function defaultToString(item: any) {
     }
     return item.toString();
 }
+
+export function defaultCompare<T>(a:T, b:T) {
+    if (a === b){
+        return Compare.EQUALS;
+    }else if(a > b) {
+        return Compare.BIGGER_THAN;
+    }else {
+        return Compare.LESS_THAN;
+    }
+}
+
