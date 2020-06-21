@@ -80,11 +80,14 @@ const fibonacciNumbers = function (index) {
 }
 
 // 求特定位置的斐波那契数(递归)
-const fibonacciNumbersRecursive = function(index){
+const fibonacciNumbersRecursive = function(n){
     // 递归终止条件
-    if (index < 1) return 0;
-    if (index <= 2) return 1;
-    return fibonacciNumbersRecursive(index - 1) + fibonacciNumbersRecursive(index - 2);
+    if (n === 0){
+        return 0;
+    } else if( n === 1){
+        return 1;
+    }
+    return fibonacciNumbersRecursive(n - 1) + fibonacciNumbersRecursive(n - 2);
 }
 
 // 求特定位置的斐波那契数(记忆化递归)
@@ -96,5 +99,4 @@ const fibonacciNumbersMemoryRecursive = function () {
     }
     return fibonacci;
 };
-
-console.log("斐波那契数测试", fibonacciNumbersRecursive(5));
+console.log("斐波那契数测试", fibonacciNumbersRecursive(4));
