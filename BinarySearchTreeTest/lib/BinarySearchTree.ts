@@ -15,22 +15,29 @@ export default class BinarySearchTree<T> {
            // 如果根节点不存在则直接新建一个节点
            this.root = new Node(key);
        }else {
-           // 向根节点中插入子节点
+           // 在根节点中找合适的位置插入子节点
+           this.insertNode(this.root,key);
        }
    }
 
+   // 节点插入
    insertNode(node: Node<T>, key: T) {
-       // 如果新节点的键小于当前节点的键
+       // 新节点的键小于当前节点的键，则将新节点插入当前节点的左边
+       // 新节点的键大于当前节点的键，则将新节点插入当前节点的右边
        if (this.compareFn(key,node.key) === Compare.LESS_THAN){
            if (node.left == null){
+               // 当前节点的左子树为null直接插入
                node.left = new Node(key);
            }else {
+               // 从当前节点(左子树)向下递归,找到null位置将其插入
                this.insertNode(node.left,key);
            }
        }else{
            if (node.right == null){
+               // 当前节点的右子树为null直接插入
                node.right = new Node(key);
            }else {
+               // 从当前节点(右子树)向下递归，找到null位置将其插入
                this.insertNode(node.right,key);
            }
        }
