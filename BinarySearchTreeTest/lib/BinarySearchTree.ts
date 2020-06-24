@@ -42,4 +42,18 @@ export default class BinarySearchTree<T> {
            }
        }
    }
+
+   // 中序遍历
+    inOrderTraverse(callback: Function){
+       this.inOrderTraverseNode(<Node<T>>this.root,callback);
+    }
+
+    // 按顺序遍历节点
+    inOrderTraverseNode(node: Node<T>,callback: Function){
+       if (node !=null){
+           this.inOrderTraverseNode(<Node<T>>node.left,callback);
+           callback(node.key);
+           this.inOrderTraverseNode(<Node<T>>node.right,callback);
+       }
+    }
 }

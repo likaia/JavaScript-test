@@ -15,4 +15,7 @@ binarySearchTree.insert(14);
 binarySearchTree.insert(20);
 binarySearchTree.insert(18);
 binarySearchTree.insert(25);
-console.log(binarySearchTree);
+binarySearchTree.insert(6);
+// 测试中序遍历函数
+const printNode = (value) => console.log(value);
+binarySearchTree.inOrderTraverse(printNode);
