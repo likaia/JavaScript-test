@@ -43,7 +43,7 @@ export default class BinarySearchTree<T> {
        }
    }
 
-   // 中序遍历
+    // 中序遍历
     inOrderTraverse(callback: Function){
        this.inOrderTraverseNode(<Node<T>>this.root,callback);
     }
