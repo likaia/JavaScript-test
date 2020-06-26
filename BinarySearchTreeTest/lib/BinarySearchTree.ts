@@ -56,4 +56,19 @@ export default class BinarySearchTree<T> {
            this.inOrderTraverseNode(<Node<T>>node.right,callback);
        }
     }
+
+    // 先序遍历
+    preOrderTraverse(callback: Function){
+       this.preOrderTraverseNode(<Node<T>>this.root, callback);
+    }
+
+    // 先序遍历结点
+    preOrderTraverseNode(node: Node<T>, callback: Function){
+       if (node != null){
+           callback(node.key);
+           this.preOrderTraverseNode(<Node<T>>node.left, callback);
+           this.preOrderTraverseNode(<Node<T>>node.right, callback);
+       }
+    }
+
 }
