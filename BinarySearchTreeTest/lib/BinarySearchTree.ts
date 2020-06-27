@@ -21,7 +21,7 @@ export default class BinarySearchTree<T> {
    }
 
    // 节点插入
-   insertNode(node: Node<T>, key: T) {
+   private insertNode(node: Node<T>, key: T) {
        // 新节点的键小于当前节点的键，则将新节点插入当前节点的左边
        // 新节点的键大于当前节点的键，则将新节点插入当前节点的右边
        if (this.compareFn(key,node.key) === Compare.LESS_THAN){
@@ -49,7 +49,7 @@ export default class BinarySearchTree<T> {
     }
 
     // 按顺序遍历节点
-    inOrderTraverseNode(node: Node<T>,callback: Function){
+    private inOrderTraverseNode(node: Node<T>,callback: Function){
        if (node !=null){
            this.inOrderTraverseNode(<Node<T>>node.left,callback);
            callback(node.key);
@@ -63,7 +63,7 @@ export default class BinarySearchTree<T> {
     }
 
     // 先序遍历结点
-    preOrderTraverseNode(node: Node<T>, callback: Function){
+    private preOrderTraverseNode(node: Node<T>, callback: Function){
        if (node != null){
            callback(node.key);
            this.preOrderTraverseNode(<Node<T>>node.left, callback);
@@ -77,7 +77,7 @@ export default class BinarySearchTree<T> {
     }
 
     // 后序遍历节点
-    postOrderTraverseNode(node: Node<T>, callback: Function) {
+    private postOrderTraverseNode(node: Node<T>, callback: Function) {
        if (node != null){
            this.postOrderTraverseNode(<Node<T>>node.left, callback);
            this.postOrderTraverseNode(<Node<T>>node.right, callback);
@@ -91,7 +91,7 @@ export default class BinarySearchTree<T> {
     }
 
     // 树的最小节点
-    minNode(node: Node<T>){
+    private minNode(node: Node<T>){
        let current = node;
        while (current != null && current.left != null){
            current = current.left;
@@ -105,7 +105,7 @@ export default class BinarySearchTree<T> {
     }
 
     // 树的最大节点
-    maxNode(node: Node<T>){
+    private maxNode(node: Node<T>){
        let current = node;
        while (current != null && current.right != null){
            current = current.right;
@@ -119,7 +119,7 @@ export default class BinarySearchTree<T> {
     }
 
     // 搜索节点
-    searchNode(node: Node<T>, key: T): boolean | Node<T>{
+    private searchNode(node: Node<T>, key: T): boolean | Node<T>{
        if (node == null){
            return false;
        }
@@ -133,6 +133,54 @@ export default class BinarySearchTree<T> {
        } else{
            // 节点已找到
            return true;
+       }
+    }
+
+    // 删除节点函数
+    remove(key: T){
+       this.removeNode(<Node<T>>this.root,key);
+    }
+
+    // 删除节点
+    private removeNode(node: Node<T> | null, key: T){
+       // 正在检测的节点为null，即键不存在于树中
+       if (node == null){
+           return null;
+       }
+
+       // 不为null,需要在树中找到要移除的键
+       if (this.compareFn(key,node.key) === Compare.LESS_THAN){ // 目标key小于当前节点的值则沿着树的左边找
+           node.left = <Node<T>>this.removeNode(<Node<T>>node.left, key);
+           return node;
+       } else if (this.compareFn(key,node.key) === Compare.BIGGER_THAN){ // 目标key大于当前节点的值则沿着树的右边找
+           node.right = <Node<T>>this.removeNode(<Node<T>>node.right, key);
+           return node;
+       } else{
+           // 键等于key,需要处理三种情况
+           if (node.left == null && node.right == null){ // 移除一个叶节点,即该节点没有左、右子节点
+               // 将节点指向null来移除它
+               node = null;
+               return node;
+           }
+
+           if (node.left == null){ // 移除一个左侧子节点的节点
+               // node有一个右侧子节点，因此需要把对它的引用改为对它右侧子节点的引用
+               node = <Node<T>>node.right;
+               // 返回更新后的节点
+               return node;
+           } else if(node.right == null){ // 移除一个右侧子节点的节点
+               // node有一个左侧子节点，因此需要把对它的引用改为对它左侧子节点的引用
+               node = node.left;
+               // 返回更新后的节点
+               return node;
+           }
+
+           // 移除有两个子节点的节点
+           const aux = this.minNode(node.right); // 当找到了要移除的节点后,需要找到它右边子树最小的节点,即它的继承者
+           node.key = aux.key; // 用右侧子树最小的节点的键去更新node的键
+           // 更新完node的键后，树中存在了两个相同的键，因此需要移除多余的键
+           node.right = <Node<T>>this.removeNode(node.right, aux.key) // 移除右侧子树中的最小节点
+           return node; // 返回更新后的节点
        }
     }
 

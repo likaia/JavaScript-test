@@ -33,3 +33,7 @@ console.log("树的最大值",binarySearchTree.max());
 // 测试搜索节点函数
 console.log("8在二叉树中",binarySearchTree.search(8));
 console.log("100在二叉树中",binarySearchTree.search(100));
+// 测试节点删除
+console.log("删除节点3");
+binarySearchTree.remove(3);
+binarySearchTree.inOrderTraverse(printNode);
