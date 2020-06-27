@@ -85,4 +85,55 @@ export default class BinarySearchTree<T> {
        }
     }
 
+    // 获取最小值
+    min(){
+       return this.minNode(<Node<T>>this.root);
+    }
+
+    // 树的最小节点
+    minNode(node: Node<T>){
+       let current = node;
+       while (current != null && current.left != null){
+           current = current.left;
+       }
+       return current;
+    }
+
+    // 获取最大值
+    max(){
+       return this.maxNode(<Node<T>>this.root);
+    }
+
+    // 树的最大节点
+    maxNode(node: Node<T>){
+       let current = node;
+       while (current != null && current.right != null){
+           current = current.right;
+       }
+       return current;
+    }
+
+    // 搜索特定值
+    search(key: T){
+       return this.searchNode(<Node<T>>this.root, key);
+    }
+
+    // 搜索节点
+    searchNode(node: Node<T>, key: T): boolean | Node<T>{
+       if (node == null){
+           return false;
+       }
+
+       if (this.compareFn(key, node.key) === Compare.LESS_THAN){
+           // 要查找的key在节点的左侧
+           return this.searchNode(<Node<T>>node.left, key);
+       } else if(this.compareFn(key, node.key) === Compare.BIGGER_THAN){
+           // 要查找的key在节点的右侧
+           return this.searchNode(<Node<T>>node.right, key);
+       } else{
+           // 节点已找到
+           return true;
+       }
+    }
+
 }

@@ -25,4 +25,11 @@ console.log("先序遍历");
 binarySearchTree.preOrderTraverse(printNode);
 // 测试后序遍历
 console.log("后序遍历");
-binarySearchTree.postOrderTraverse(printNode)
+binarySearchTree.postOrderTraverse(printNode);
+// 测试获取最小值函数
+console.log("树的最小值",binarySearchTree.min());
+// 测试获取最大值函数
+console.log("树的最大值",binarySearchTree.max());
+// 测试搜索节点函数
+console.log("8在二叉树中",binarySearchTree.search(8));
+console.log("100在二叉树中",binarySearchTree.search(100));
