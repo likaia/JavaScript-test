@@ -18,8 +18,11 @@ binarySearchTree.insert(25);
 binarySearchTree.insert(6);
 // 测试中序遍历函数
 const printNode = (value) => console.log(value);
-console.log("中序遍历")
+console.log("中序遍历");
 binarySearchTree.inOrderTraverse(printNode);
 // 测试先序遍历
-console.log("先序遍历")
+console.log("先序遍历");
 binarySearchTree.preOrderTraverse(printNode);
+// 测试后序遍历
+console.log("后序遍历");
+binarySearchTree.postOrderTraverse(printNode)

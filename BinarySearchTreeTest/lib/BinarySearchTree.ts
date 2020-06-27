@@ -71,4 +71,18 @@ export default class BinarySearchTree<T> {
        }
     }
 
+    // 后序遍历
+    postOrderTraverse(callback: Function){
+       this.postOrderTraverseNode(<Node<T>>this.root, callback);
+    }
+
+    // 后序遍历节点
+    postOrderTraverseNode(node: Node<T>, callback: Function) {
+       if (node != null){
+           this.postOrderTraverseNode(<Node<T>>node.left, callback);
+           this.postOrderTraverseNode(<Node<T>>node.right, callback);
+           callback(node.key);
+       }
+    }
+
 }
