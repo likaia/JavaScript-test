@@ -43,4 +43,16 @@ export default class AVLTree<T> extends BinarySearchTree<T>{
                 return BalanceFactor.BALANCED;
         }
     }
+
+    // 向右的单旋转
+    rotationLL(node: Node<T>) {
+        // 创建tmp变量, 存储node的左子节点
+        const tmp = <Node<T>>node.left;
+        // node的左子节点修改为tmp的右子节点
+        node.left = tmp.right;
+        // tmp的右子节点修改为node
+        tmp.right = node;
+        // 更新节点
+        return tmp;
+    }
 }
