@@ -55,4 +55,16 @@ export default class AVLTree<T> extends BinarySearchTree<T>{
         // 更新节点
         return tmp;
     }
+
+    // 向左的单旋转
+    rotationRR(node: Node<T>) {
+        // 将节点X置于节点Y
+        const tmp = <Node<T>>node.right;
+        // 将Y的右子节点置为X的左子节点
+        node.left = tmp.right;
+        // 将X的左子节点置为Y
+        tmp.left = node;
+        // 更新节点
+        return tmp;
+    }
 }
