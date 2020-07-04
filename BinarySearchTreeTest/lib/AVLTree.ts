@@ -67,4 +67,16 @@ export default class AVLTree<T> extends BinarySearchTree<T>{
         // 更新节点
         return tmp;
     }
+
+    // 向右的双旋转
+    rotationLR(node: Node<T>) {
+        node.left = this.rotationRR(<Node<T>>node.left);
+        return this.rotationLL(node);
+    }
+
+    // 向左的双旋转
+    rotationRL(node: Node<T>) {
+        node.right = this.rotationLL(<Node<T>>node.right);
+        return this.rotationRR(node);
+    }
 }
