@@ -7,7 +7,7 @@ enum BalanceFactor {
     UNBALANCED_RIGHT = 1,
     SLIGHTLY_UNBALANCED_RIGHT = 2,
     BALANCED = 3,
-    SLIGHTLY_UNBALANCED= 4,
+    SLIGHTLY_UNBALANCED_LEFT= 4,
     UNBALANCED_LEFT = 5
 }
 
@@ -36,7 +36,7 @@ export default class AVLTree<T> extends BinarySearchTree<T>{
             case -1:
                 return BalanceFactor.SLIGHTLY_UNBALANCED_RIGHT;
             case 1:
-                return BalanceFactor.SLIGHTLY_UNBALANCED;
+                return BalanceFactor.SLIGHTLY_UNBALANCED_LEFT;
             case 2:
                 return BalanceFactor.UNBALANCED_LEFT;
             default:
@@ -78,5 +78,91 @@ export default class AVLTree<T> extends BinarySearchTree<T>{
     rotationRL(node: Node<T>) {
         node.right = this.rotationLL(<Node<T>>node.right);
         return this.rotationRR(node);
+    }
+
+    // 向树AVL树中插入节点
+    insert(key: T) {
+        this.root = this.insertNode(<Node<T>>this.root, key)
+    }
+
+    insertNode(node: Node<T>, key:T) {
+        if (node == null) {
+            return new Node(key);
+        }else if(this.compareFn(key, node.key) === Compare.LESS_THAN) {
+            node.left = this.insertNode(<Node<T>>node.left, key);
+        }else if(this.compareFn(key, node.key) === Compare.BIGGER_THAN) {
+            node.right = this.insertNode(<Node<T>>node.right, key);
+        }else {
+            return node; // 重复的键
+        }
+
+        // 计算平衡因子判断树是否需要平衡操作
+        const balanceFactor = this.getBalanceFactor(node);
+        // 向左侧子树插入节点后树失衡
+        if (balanceFactor === BalanceFactor.UNBALANCED_LEFT) {
+            // 判断插入的键是否小于左侧子节点的键
+            if (this.compareFn(key, <T>node.left?.key) === Compare.LESS_THAN) {
+                // 小于则进行LL旋转
+                node = this.rotationLL(node);
+            } else {
+                // 否则进行LR旋转
+                return this.rotationLR(node);
+            }
+        }
+        // 向右侧子树插入节点后树失衡
+        if (balanceFactor === BalanceFactor.UNBALANCED_RIGHT) {
+            // 判断插入的键是否小于右侧子节点的键
+            if (this.compareFn(key, <T>node.right?.key) === Compare.BIGGER_THAN) {
+                // 小于则进行RR旋转
+                node = this.rotationRR(node);
+            } else{
+                // 否则进行RL旋转
+                return this.rotationRL(node);
+            }
+        }
+        // 更新节点
+        return node;
+    }
+
+    // 移除节点
+    removeNode(node: Node<T>, key: T) {
+        node = <Node<T>>super.removeNode(node, key);
+        if (node == null) {
+            return node;
+        }
+
+        // 获取树的平衡因子
+        const balanceFactor = this.getBalanceFactor(node);
+        // 左树失衡
+        if (balanceFactor === BalanceFactor.UNBALANCED_LEFT) {
+            // 计算左树的平衡因子
+            const balanceFactorLeft = this.getBalanceFactor(<Node<T>>node.left);
+            // 左侧子树向左不平衡
+            if (balanceFactorLeft === BalanceFactor.BALANCED || balanceFactorLeft === BalanceFactor.UNBALANCED_LEFT) {
+                // 进行LL旋转
+                return this.rotationLL(node);
+            }
+            // 右侧子树向右不平衡
+            if (balanceFactorLeft === BalanceFactor.SLIGHTLY_UNBALANCED_RIGHT) {
+                // 进行LR旋转
+                return this.rotationLR(<Node<T>>node.left);
+            }
+        }
+        // 右树失衡
+        if (balanceFactor === BalanceFactor.UNBALANCED_RIGHT) {
+            // 计算右侧子树平衡因子
+            const balanceFactorRight = this.getBalanceFactor(<Node<T>>node.right);
+            // 右侧子树向右不平衡
+            if (balanceFactorRight === BalanceFactor.BALANCED || balanceFactorRight === BalanceFactor.SLIGHTLY_UNBALANCED_RIGHT) {
+                // 进行RR旋转
+                return this.rotationRR(node);
+            }
+            // 右侧子树向左不平衡
+            if (balanceFactorRight === BalanceFactor.SLIGHTLY_UNBALANCED_LEFT) {
+                // 进行RL旋转
+                return this.rotationRL(<Node<T>>node.right);
+            }
+        }
+        return node;
     }
 }

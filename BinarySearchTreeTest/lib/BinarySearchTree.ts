@@ -21,7 +21,7 @@ export default class BinarySearchTree<T> {
    }
 
    // 节点插入
-   private insertNode(node: Node<T>, key: T) {
+   protected insertNode(node: Node<T>, key: T) {
        // 新节点的键小于当前节点的键，则将新节点插入当前节点的左边
        // 新节点的键大于当前节点的键，则将新节点插入当前节点的右边
        if (this.compareFn(key,node.key) === Compare.LESS_THAN){
@@ -142,7 +142,7 @@ export default class BinarySearchTree<T> {
     }
 
     // 删除节点
-    private removeNode(node: Node<T> | null, key: T){
+    protected removeNode(node: Node<T> | null, key: T){
        // 正在检测的节点为null，即键不存在于树中
        if (node == null){
            return null;
