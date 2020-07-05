@@ -91,7 +91,7 @@ export default class BinarySearchTree<T> {
     }
 
     // 树的最小节点
-    private minNode(node: Node<T>){
+    protected minNode(node: Node<T>): Node<T>{
        let current = node;
        while (current != null && current.left != null){
            current = current.left;

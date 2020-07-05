@@ -6,11 +6,11 @@ const printNode = value=>{
 }
 /**
  *  测试树失衡
- *              30
- *             / \
- *           27  60
- *          /
- *         12
+ *              30              30                       30
+ *             / \             / \                      / \
+ *           27  60   ->     12  60  -> remove(10)    12  60
+ *          /               / \                        \
+ *         12              10 27                       27
  *        /
  *      10
  */
@@ -19,6 +19,6 @@ avlTree.insert(27);
 avlTree.insert(60);
 avlTree.insert(12);
 avlTree.insert(10);
-console.log(avlTree)
-// 中序遍历
-avlTree.inOrderTraverse(printNode);
+avlTree.remove(10);
+// 后序遍历
+avlTree.preOrderTraverse(printNode);
