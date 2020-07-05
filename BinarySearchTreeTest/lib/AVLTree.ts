@@ -7,7 +7,7 @@ enum BalanceFactor {
     UNBALANCED_RIGHT = 1,
     SLIGHTLY_UNBALANCED_RIGHT = 2,
     BALANCED = 3,
-    SLIGHTLY_UNBALANCED_LEFT= 4,
+    SLIGHTLY_UNBALANCED_LEFT = 4,
     UNBALANCED_LEFT = 5
 }
 
@@ -27,7 +27,7 @@ export default class AVLTree<T> extends BinarySearchTree<T>{
     }
 
     // 计算节点的平衡因子:在AVL树中，需要对每个节点计算右子树的高度和左子树的高度的差值，该值应为0 | -1 | 1，如果差值不符合要求则需要平衡该树。
-    getBalanceFactor(node: Node<T>) {
+    private getBalanceFactor(node: Node<T>) {
         // 计算差值
         const heightDifference = this.getNodeHeight(<Node<T>>node.left) - this.getNodeHeight(<Node<T>>node.right);
         switch (heightDifference) {
@@ -44,7 +44,17 @@ export default class AVLTree<T> extends BinarySearchTree<T>{
         }
     }
 
-    // 向右的单旋转
+    /**
+     * 左左情况: 向右的单旋转
+     *
+     *      b                            a
+     *     / \                          / \
+     *    a   e -> rotationLL(b) ->    c   b
+     *   / \                              / \
+     *  c   d                            d   e
+     *
+     * @param node
+     */
     rotationLL(node: Node<T>) {
         // 创建tmp变量, 存储node的左子节点
         const tmp = <Node<T>>node.left;
@@ -56,7 +66,16 @@ export default class AVLTree<T> extends BinarySearchTree<T>{
         return tmp;
     }
 
-    // 向左的单旋转
+    /**
+     * 右右情况: 向左的单旋转
+     *
+     *      a                            b
+     *     / \                          / \
+     *    c   b -> rotationRR(a) ->    a   e
+     *       / \                      / \
+     *      d   e                    c   d
+     * @param node
+     */
     rotationRR(node: Node<T>) {
         // 将节点X置于节点Y
         const tmp = <Node<T>>node.right;
@@ -68,13 +87,19 @@ export default class AVLTree<T> extends BinarySearchTree<T>{
         return tmp;
     }
 
-    // 向右的双旋转
+    /**
+     * 左右情况: 向右的双旋转, 先向右旋转然后向左旋转
+     * @param node
+     */
     rotationLR(node: Node<T>) {
         node.left = this.rotationRR(<Node<T>>node.left);
         return this.rotationLL(node);
     }
 
-    // 向左的双旋转
+    /**
+     * 右左情况: 向左的双旋转,先向左旋转然后向右旋转
+     * @param node
+     */
     rotationRL(node: Node<T>) {
         node.right = this.rotationLL(<Node<T>>node.right);
         return this.rotationRR(node);
@@ -85,7 +110,7 @@ export default class AVLTree<T> extends BinarySearchTree<T>{
         this.root = this.insertNode(<Node<T>>this.root, key)
     }
 
-    insertNode(node: Node<T>, key:T) {
+    protected insertNode(node: Node<T>, key:T) {
         if (node == null) {
             return new Node(key);
         }else if(this.compareFn(key, node.key) === Compare.LESS_THAN) {
@@ -97,9 +122,10 @@ export default class AVLTree<T> extends BinarySearchTree<T>{
         }
 
         // 计算平衡因子判断树是否需要平衡操作
-        const balanceFactor = this.getBalanceFactor(node);
+        const balanceState = this.getBalanceFactor(node);
+
         // 向左侧子树插入节点后树失衡
-        if (balanceFactor === BalanceFactor.UNBALANCED_LEFT) {
+        if (balanceState === BalanceFactor.UNBALANCED_LEFT) {
             // 判断插入的键是否小于左侧子节点的键
             if (this.compareFn(key, <T>node.left?.key) === Compare.LESS_THAN) {
                 // 小于则进行LL旋转
@@ -110,12 +136,12 @@ export default class AVLTree<T> extends BinarySearchTree<T>{
             }
         }
         // 向右侧子树插入节点后树失衡
-        if (balanceFactor === BalanceFactor.UNBALANCED_RIGHT) {
+        if (balanceState === BalanceFactor.UNBALANCED_RIGHT) {
             // 判断插入的键是否小于右侧子节点的键
             if (this.compareFn(key, <T>node.right?.key) === Compare.BIGGER_THAN) {
                 // 小于则进行RR旋转
                 node = this.rotationRR(node);
-            } else{
+            } else {
                 // 否则进行RL旋转
                 return this.rotationRL(node);
             }
@@ -125,16 +151,16 @@ export default class AVLTree<T> extends BinarySearchTree<T>{
     }
 
     // 移除节点
-    removeNode(node: Node<T>, key: T) {
+    protected removeNode(node: Node<T>, key: T) {
         node = <Node<T>>super.removeNode(node, key);
         if (node == null) {
             return node;
         }
 
         // 获取树的平衡因子
-        const balanceFactor = this.getBalanceFactor(node);
+        const balanceState = this.getBalanceFactor(node);
         // 左树失衡
-        if (balanceFactor === BalanceFactor.UNBALANCED_LEFT) {
+        if (balanceState === BalanceFactor.UNBALANCED_LEFT) {
             // 计算左树的平衡因子
             const balanceFactorLeft = this.getBalanceFactor(<Node<T>>node.left);
             // 左侧子树向左不平衡
@@ -149,7 +175,7 @@ export default class AVLTree<T> extends BinarySearchTree<T>{
             }
         }
         // 右树失衡
-        if (balanceFactor === BalanceFactor.UNBALANCED_RIGHT) {
+        if (balanceState === BalanceFactor.UNBALANCED_RIGHT) {
             // 计算右侧子树平衡因子
             const balanceFactorRight = this.getBalanceFactor(<Node<T>>node.right);
             // 右侧子树向右不平衡
