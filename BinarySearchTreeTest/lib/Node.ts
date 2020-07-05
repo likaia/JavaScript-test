@@ -13,3 +13,26 @@ export class Node<K> {
         return `${this.key}`;
     }
 }
+
+export enum Colors {
+    RED = 0,
+    BLACK = 1
+}
+
+/**
+ * 红黑树辅助节点
+ */
+export class RedBlackNode<K> extends Node<K> {
+    public left: RedBlackNode<K> | undefined;
+    public right: RedBlackNode<K> | undefined;
+    public parent: RedBlackNode<K> | undefined;
+    public color: number;
+    constructor(public key: K) {
+        super(key);
+        this.color = Colors.RED;
+    }
+
+    isRed() {
+        return this.color === Colors.RED;
+    }
+}
