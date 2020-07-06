@@ -21,6 +21,8 @@ export enum Colors {
 
 /**
  * 红黑树辅助节点
+ *   1. 添加parent和color节点
+ *   2. 节点的默认颜色为红色
  */
 export class RedBlackNode<K> extends Node<K> {
     public left: RedBlackNode<K> | undefined;
