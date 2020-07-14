@@ -1,0 +1,19 @@
+{
+  "name": "javascript-test",
+  "version": "1.0.0",
+  "description": "js或者ts代码练习",
+  "main": "index.js",
+  "repository": "https://github.com/likaia/JavaScript-test.git",
+  "author": "likai <1195419506@qq.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^3.6.1",
+    "@typescript-eslint/parser": "^3.6.1",
+    "eslint": "^7.4.0",
+    "prettier": "^2.0.5",
+    "typescript": "^3.9.6"
+  },
+  "dependencies": {
+    "standard": "^14.3.4"
+  }
+}
