@@ -1,19 +1,19 @@
 {
     "env": {
-        "browser": true,
-        "es2020": true,
-        "node": true
+        "browser": true, // 开启浏览器
+        "es2020": true, // 开启es2020语法
+        "node": true // 开启node
     },
     "extends": [
-        "eslint:recommended",
-        "plugin:@typescript-eslint/recommended"
+        "eslint:recommended", // 使用eslint的标准验证规则
+        "plugin:@typescript-eslint/recommended" // 使用typescript插件推荐的标准验证规则
     ],
-    "parser": "@typescript-eslint/parser",
+    "parser": "@typescript-eslint/parser", // 使用typescript作为ESLint的解析器
     "parserOptions": {
-        "ecmaVersion": 11,
-        "sourceType": "module"
+        "ecmaVersion": 11, // ecmaVersion对应ES2020
+        "sourceType": "module" // ES6+语法必须用module
     },
-    "plugins": [
+    "plugins": [ // 用到的插件
         "@typescript-eslint",
         "prettier"
     ],
