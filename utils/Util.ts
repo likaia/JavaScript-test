@@ -13,30 +13,29 @@ export enum Compare {
 }
 
 // 默认校验函数: 判断参数a与参数b是否相等
-export function defaultEquals(a: any,b: any) {
+export function defaultEquals<T>(a: T, b: T) {
     return a === b;
 }
 
 // 默认的字符串转换函数: 用于将其他类型的数据转换为字符串
 export function defaultToString(item: any) {
-    if (item === null){
+    if (item === null) {
         return "null";
-    } else if(item === undefined){
+    } else if (item === undefined) {
         return "undefined";
-    } else if(typeof item === "string" ||item instanceof String){
+    } else if (typeof item === "string" || item instanceof String) {
         return `${item}`;
     }
     return item.toString();
 }
 
 // 默认的比对函数: 比对参数a和参数b的大小返回其相应的枚举值
-export function defaultCompare<T>(a:T, b:T) {
-    if (a === b){
+export function defaultCompare<T>(a: T, b: T) {
+    if (a === b) {
         return Compare.EQUALS;
-    }else if(a > b) {
+    } else if (a > b) {
         return Compare.BIGGER_THAN;
-    }else {
+    } else {
         return Compare.LESS_THAN;
     }
 }
-
