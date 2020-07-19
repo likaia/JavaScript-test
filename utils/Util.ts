@@ -30,7 +30,7 @@ export function defaultToString(item: any) {
 }
 
 // 默认的比对函数: 比对参数a和参数b的大小返回其相应的枚举值
-export function defaultCompare<T>(a: T, b: T) {
+export function defaultCompare<T>(a: T, b: T): number {
     if (a === b) {
         return Compare.EQUALS;
     } else if (a > b) {
@@ -38,4 +38,9 @@ export function defaultCompare<T>(a: T, b: T) {
     } else {
         return Compare.LESS_THAN;
     }
+}
+
+// 反转比对函数: 比对参数b和参数a的大小返回其对应的枚举值
+export function reverseCompare<T>(compareFn: ICompareFunction<T>): ICompareFunction<T> {
+    return (a, b) => compareFn(b, a);
 }
