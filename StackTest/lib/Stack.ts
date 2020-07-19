@@ -1,5 +1,5 @@
 // 实现数据结构栈
-export default class Stack{
+export default class Stack {
     // 定义栈并规定其类型
     private items: any[];
     // 构造器
@@ -7,7 +7,7 @@ export default class Stack{
         this.items = [];
     }
     // 入栈
-    push(item:any) {
+    push(item: any) {
         this.items.push(item);
     }
     // 出栈
@@ -27,11 +27,11 @@ export default class Stack{
         this.items = [];
     }
     // 获取栈内元素数量
-    size():number{
+    size(): number {
         return this.items.length;
     }
     // 将栈内元素转为字符串
-    toString(){
+    toString() {
         return this.items.toString();
     }
 }

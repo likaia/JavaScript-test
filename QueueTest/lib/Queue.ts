@@ -1,13 +1,13 @@
 // 声明队列内部对象类型
 interface QueueObj {
-    [propName: number] : any;
+    [propName: number]: any;
 }
 
 /**
  * 实现队列
  *    队列的基础方法: 入队、出队、返回队首元素、获取队列大小、判断队列是否为空、清空队列、获取队列内所有数据
  */
-export default class Queue{
+export default class Queue {
     private count: number;
     private lowestCount: number;
     private items: QueueObj;
@@ -29,7 +29,7 @@ export default class Queue{
 
     // 出队
     dequeue() {
-        if(this.isEmpty()){
+        if (this.isEmpty()) {
             return undefined;
         }
         const result = this.items[this.lowestCount];
@@ -42,7 +42,7 @@ export default class Queue{
 
     // 返回队首元素
     peek() {
-        if(this.isEmpty()){
+        if (this.isEmpty()) {
             return undefined;
         }
         return this.items[this.lowestCount];
@@ -67,11 +67,11 @@ export default class Queue{
 
     // 获取队列内所有数据
     toString() {
-        if(this.isEmpty()){
+        if (this.isEmpty()) {
             return "";
         }
         let objString = `${this.items[this.lowestCount]}`;
-        for (let i = this.lowestCount + 1; i < this.count; i++){
+        for (let i = this.lowestCount + 1; i < this.count; i++) {
             objString = `${objString},${this.items[i]}`;
         }
         return objString;

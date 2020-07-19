@@ -7,7 +7,7 @@ interface DequeObj {
  * 双端队列
  *     队首队尾添加删除获取元素、获取队列大小、清空队列、队列判空、获取队列中的所有元素
  */
-export default class Deque{
+export default class Deque {
     private count: number;
     private lowestCount: number;
     private items: DequeObj;
@@ -19,15 +19,15 @@ export default class Deque{
 
     // 队首添加元素
     addFront(item: any) {
-        if (this.isEmpty()){
+        if (this.isEmpty()) {
             this.addBack(item);
-        }else if(this.lowestCount > 0){
+        } else if (this.lowestCount > 0) {
             // 队首元素大于0
             this.lowestCount--;
             this.items[this.lowestCount] = item;
-        }else{
+        } else {
             // 队首元素为0，我们需要将将队列里的0号key空出来，其他数据整体向后移动一位。
-            for (let i = this.count; i > 0; i--){
+            for (let i = this.count; i > 0; i--) {
                 this.items[i] = this.items[i - 1];
             }
             // 队列长度自增
@@ -40,14 +40,14 @@ export default class Deque{
     }
 
     // 队尾添加元素
-    addBack(item: any){
+    addBack(item: any) {
         this.items[this.count] = item;
         this.count++;
     }
 
     // 移除队首元素
     removeFront() {
-        if(this.isEmpty()){
+        if (this.isEmpty()) {
             return undefined;
         }
         const result = this.items[this.lowestCount];
@@ -58,18 +58,18 @@ export default class Deque{
 
     // 移除队尾元素
     removeBack() {
-        if (this.isEmpty()){
+        if (this.isEmpty()) {
             return undefined;
         }
         this.count--;
         const result = this.items[this.count];
         delete this.items[this.count];
-        return  result;
+        return result;
     }
 
     // 获取队首元素
     peekFront() {
-        if (this.isEmpty()){
+        if (this.isEmpty()) {
             return undefined;
         }
         return this.items[this.lowestCount];
@@ -77,7 +77,7 @@ export default class Deque{
 
     // 获取队尾元素
     peekBack() {
-        if (this.isEmpty()){
+        if (this.isEmpty()) {
             return undefined;
         }
         return this.items[this.count - 1];
@@ -90,9 +90,9 @@ export default class Deque{
 
     // 清空队列
     clear() {
-       this.count = 0;
-       this.lowestCount = 0;
-       this.items = {};
+        this.count = 0;
+        this.lowestCount = 0;
+        this.items = {};
     }
 
     // 队列判空
@@ -102,15 +102,14 @@ export default class Deque{
 
     // 获取队列中的所有元素
     toString() {
-        if(this.isEmpty()){
+        if (this.isEmpty()) {
             return "";
         }
 
         let objString = `${this.items[this.lowestCount]}`;
-        for (let i = this.lowestCount + 1; i < this.count; i++){
-            objString = `${objString},${this.items[i]}`
+        for (let i = this.lowestCount + 1; i < this.count; i++) {
+            objString = `${objString},${this.items[i]}`;
         }
         return objString;
     }
-
 }
