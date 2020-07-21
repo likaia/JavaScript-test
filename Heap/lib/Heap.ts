@@ -4,7 +4,7 @@ import { Compare, ICompareFunction, reverseCompare, defaultCompare } from "../..
  * 堆是一颗完全二叉树
  *  1. 左子节点的位置: 2 * index + 1
  *  2. 右子节点的位置: 2 * index + 2
- *  3. 父节点的位置: index / 2
+ *  3. 父节点的位置: (index - 1) / 2
  */
 export class MinHeap<T> {
     // 用数组来描述一个堆
@@ -37,7 +37,7 @@ export class MinHeap<T> {
         if (value != null) {
             // 向堆的叶结点添加元素，即数组的尾部
             this.heap.push(value);
-            // 进行siftUp操作，即上移节点至合适的位置
+            // 进行上移操作，即上移节点至合适的位置
             this.siftUp(this.heap.length - 1);
             return true;
         }
@@ -48,6 +48,7 @@ export class MinHeap<T> {
     heapSort(array: T[]): void {
         // 构建堆
         this.buildHeap(array);
+        // 从堆的末尾开始遍历，将遍历到的元素与0好元素进行交换，然后执行下移操作
         for (let i = array.length - 1; i >= 0; i--) {
             this.swap(array, i, 0);
             this.heapify(array, i, 0);
@@ -95,7 +96,7 @@ export class MinHeap<T> {
         }
     }
 
-    // 实现siftUp函数
+    // 实现上移函数
     protected siftUp(index: number): void {
         // 获取父节点位置
         let parent = <number>this.getParentIndex(index);
