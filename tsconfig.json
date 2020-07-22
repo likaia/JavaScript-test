@@ -4,11 +4,12 @@
     ],
     "compilerOptions": {
         "lib": [
-            "es2015",
+            "esnext",
             "dom"
         ],
         "outDir": "./dist/ts",
         "target": "es6",
+        "strict": true,
         "module": "es2015",
         "noImplicitAny": true,
         "noImplicitThis": true,
