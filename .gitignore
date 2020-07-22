@@ -19,4 +19,4 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
-/BinarySearchTreeTest/lib/.inOrderTraverse.autosave.xopp
+/src/BinarySearchTreeTest/lib/.inOrderTraverse.autosave.xopp
