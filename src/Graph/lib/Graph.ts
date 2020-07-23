@@ -46,6 +46,7 @@ export default class Graph {
         return this.adjList;
     }
 
+    // 将图转为字符串
     toString(): string {
         let s = "";
         for (let i = 0; i < this.vertices.length; i++) {
