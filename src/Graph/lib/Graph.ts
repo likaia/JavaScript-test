@@ -1,5 +1,25 @@
 import Dictionary from "../../DictionaryTest/lib/Dictionary.ts";
 
+/**
+ * 声明枚举，用于描述顶点的访问状态
+ * 1 顶点没有被访问
+ * 2 顶点被访问过，但并未被探索过
+ * 3 顶点已经被访问且被完全探索过
+ */
+export enum Colors {
+    WHITE = 1,
+    GERY = 2,
+    BLACK = 3
+}
+
+const initializeColor = (vertices: (number | string)[]) => {
+    const color: { [key: string]: number } = {};
+    for (let i = 0; i < vertices.length; i++) {
+        color[vertices[i]] = Colors.WHITE;
+    }
+    return color;
+};
+
 export default class Graph {
     // 存储图的顶点
     private vertices: (number | string)[] = [];
