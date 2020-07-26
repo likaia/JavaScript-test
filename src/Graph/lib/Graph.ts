@@ -1,4 +1,5 @@
 import Dictionary from "../../DictionaryTest/lib/Dictionary.ts";
+import Queue from "../../QueueTest/lib/Queue.ts";
 
 /**
  * 声明枚举，用于描述顶点的访问状态
@@ -20,7 +21,110 @@ const initializeColor = (vertices: (number | string)[]) => {
     return color;
 };
 
-export default class Graph {
+/**
+ * 广度优先搜索
+ * @param graph 需要进行搜索的图
+ * @param startVertex 开始顶点
+ * @param callback 得到每个节点后的回调函数
+ */
+export const breadthFirstSearch = (graph: Graph, startVertex: string | number, callback: (val: string | number) => void): void => {
+    // 获取图的所有顶点
+    const vertices = graph.getVertices();
+    // 获取图的临接表
+    const adjList = graph.getAdjList();
+    // 将顶点进行初始化
+    const color = initializeColor(vertices);
+    // 实例化一个队列
+    const queue = new Queue();
+    // 将开始顶点入队
+    queue.enqueue(startVertex);
+    // 如果队列不为空就继续执行
+    while (!queue.isEmpty()) {
+        // 取出队列里存储的顶点u
+        const u = queue.dequeue();
+        // 获取取出顶点的临接表
+        const neighbors = <(string | number)[]>adjList.get(u);
+        // 将顶点列表里的u标识为已被访问但未被探索
+        color[u] = Colors.GERY;
+        // 遍历当前取出顶点的临接表
+        for (let i = 0; i < neighbors.length; i++) {
+            // 获取临接表中的每个顶点w
+            const w = neighbors[i];
+            // 如果w没被访问过
+            if (color[w] === Colors.WHITE) {
+                // 标识w为已被访问但未被探索
+                color[w] = Colors.GERY;
+                // 将w加入队列
+                queue.enqueue(w);
+            }
+        }
+        // 此时u顶点与其相邻顶点已经被探索，将u标识为已被访问且被完全探索
+        color[u] = Colors.BLACK;
+        // 执行回调函数
+        if (callback) {
+            callback(u);
+        }
+    }
+};
+
+export const BFS = (
+    graph: Graph,
+    startVertex: string | number
+): { distances: { [key: string]: string | number }; predecessors: { [key: string]: string | number | null } } => {
+    // 获取图的所有顶点
+    const vertices = <(string | number)[]>graph.getVertices();
+    // 获取图的临接表
+    const adjList = graph.getAdjList();
+    // 初始化顶点颜色
+    const color = initializeColor(vertices);
+    // 创建一个队列
+    const queue = new Queue();
+    // 存储每个顶点的距离
+    const distances: { [key: string]: string | number } = {};
+    // 存储前溯点
+    const predecessors: { [key: string]: string | null | number } = {};
+    // 顶点入队
+    queue.enqueue(startVertex);
+
+    // 遍历所有顶点
+    for (let i = 0; i < vertices.length; i++) {
+        // 用0来初始化每个顶点的距离
+        distances[vertices[i]] = 0;
+        // 用null来初始化每个顶点的前溯点
+        predecessors[vertices[i]] = null;
+    }
+
+    while (!queue.isEmpty()) {
+        // 获取队首顶点u
+        const u = queue.dequeue();
+        // 获取u的临接表
+        const neighbors = <(string | number)[]>adjList.get(u);
+        // u标识为已访问但未被探索状态
+        color[u] = Colors.GERY;
+        // 遍历u的临接表
+        for (let i = 0; i < neighbors.length; i++) {
+            // 获取临接表中遍历到的顶点w
+            const w = neighbors[i];
+            // 如果顶点w未被访问
+            if (color[w] === Colors.WHITE) {
+                // 标识顶点w为已访问但为被探索
+                color[w] = Colors.GERY;
+                // 给u顶点加1来增加v和w之间的距离（u是w的前溯点）
+                distances[w] = <number>distances[u] + 1;
+                // 发现顶点u的邻点w时，则设置w的前溯点值为u
+                predecessors[w] = u;
+                // w入栈
+                queue.enqueue(w);
+            }
+        }
+    }
+    return {
+        distances,
+        predecessors
+    };
+};
+
+export class Graph {
     // 存储图的顶点
     private vertices: (number | string)[] = [];
     // 存储临接表
