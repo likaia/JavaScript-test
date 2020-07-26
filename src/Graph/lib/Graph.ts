@@ -67,6 +67,12 @@ export const breadthFirstSearch = (graph: Graph, startVertex: string | number, c
     }
 };
 
+/**
+ * 广度优先搜索优化
+ * @param graph 要进行遍历的图
+ * @param startVertex 开始顶点
+ * @constructor
+ */
 export const BFS = (
     graph: Graph,
     startVertex: string | number
@@ -122,6 +128,21 @@ export const BFS = (
         distances,
         predecessors
     };
+};
+
+const depthFirstSearch = (graph: Graph, callback: (val: string) => void): void => {
+    // 获取图的顶点
+    const vertices = graph.getVertices();
+    // 获取图的临接表
+    const adjList = graph.getAdjList();
+    // 初始化顶点
+    const color = initializeColor(vertices);
+
+    for (let i = 0; i < vertices.length; i++) {
+        if (color[vertices[i]] === Colors.WHITE) {
+            //
+        }
+    }
 };
 
 export class Graph {
