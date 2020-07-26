@@ -1,5 +1,10 @@
 import { Compare, defaultCompare, ICompareFunction } from "../../../utils/Util.ts";
 import { Node } from "./Node.ts";
+
+interface callbackFn<T> {
+    (val: T): void;
+}
+
 /**
  * 二叉搜索树的实现
  */
@@ -10,7 +15,7 @@ export default class BinarySearchTree<T> {
         this.root = undefined;
     }
 
-    insert(key: T) {
+    insert(key: T): void {
         if (this.root == null) {
             // 如果根节点不存在则直接新建一个节点
             this.root = new Node(key);
@@ -21,7 +26,7 @@ export default class BinarySearchTree<T> {
     }
 
     // 节点插入
-    protected insertNode(node: Node<T>, key: T) {
+    protected insertNode(node: Node<T>, key: T): void {
         // 新节点的键小于当前节点的键，则将新节点插入当前节点的左边
         // 新节点的键大于当前节点的键，则将新节点插入当前节点的右边
         if (this.compareFn(key, node.key) === Compare.LESS_THAN) {
@@ -44,12 +49,12 @@ export default class BinarySearchTree<T> {
     }
 
     // 中序遍历
-    inOrderTraverse(callback: Function) {
+    inOrderTraverse(callback: callbackFn<T>): void {
         this.inOrderTraverseNode(<Node<T>>this.root, callback);
     }
 
     // 按顺序遍历节点
-    private inOrderTraverseNode(node: Node<T>, callback: Function) {
+    private inOrderTraverseNode(node: Node<T>, callback: callbackFn<T>) {
         if (node != null) {
             this.inOrderTraverseNode(<Node<T>>node.left, callback);
             callback(node.key);
@@ -58,12 +63,12 @@ export default class BinarySearchTree<T> {
     }
 
     // 先序遍历
-    preOrderTraverse(callback: Function) {
+    preOrderTraverse(callback: callbackFn<T>): void {
         this.preOrderTraverseNode(<Node<T>>this.root, callback);
     }
 
     // 先序遍历结点
-    private preOrderTraverseNode(node: Node<T>, callback: Function) {
+    private preOrderTraverseNode(node: Node<T>, callback: callbackFn<T>): void {
         if (node != null) {
             callback(node.key);
             this.preOrderTraverseNode(<Node<T>>node.left, callback);
@@ -72,12 +77,12 @@ export default class BinarySearchTree<T> {
     }
 
     // 后序遍历
-    postOrderTraverse(callback: Function) {
+    postOrderTraverse(callback: callbackFn<T>): void {
         this.postOrderTraverseNode(<Node<T>>this.root, callback);
     }
 
     // 后序遍历节点
-    private postOrderTraverseNode(node: Node<T>, callback: Function) {
+    private postOrderTraverseNode(node: Node<T>, callback: callbackFn<T>): void {
         if (node != null) {
             this.postOrderTraverseNode(<Node<T>>node.left, callback);
             this.postOrderTraverseNode(<Node<T>>node.right, callback);
@@ -86,7 +91,7 @@ export default class BinarySearchTree<T> {
     }
 
     // 获取最小值
-    min() {
+    min(): Node<T> {
         return this.minNode(<Node<T>>this.root);
     }
 
@@ -100,7 +105,7 @@ export default class BinarySearchTree<T> {
     }
 
     // 获取最大值
-    max() {
+    max(): Node<T> {
         return this.maxNode(<Node<T>>this.root);
     }
 
@@ -114,7 +119,7 @@ export default class BinarySearchTree<T> {
     }
 
     // 搜索特定值
-    search(key: T) {
+    search(key: T): boolean | Node<T> {
         return this.searchNode(<Node<T>>this.root, key);
     }
 
@@ -137,12 +142,12 @@ export default class BinarySearchTree<T> {
     }
 
     // 删除节点函数
-    remove(key: T) {
+    remove(key: T): void {
         this.removeNode(<Node<T>>this.root, key);
     }
 
     // 删除节点
-    protected removeNode(node: Node<T> | null, key: T) {
+    protected removeNode(node: Node<T> | null, key: T): null | Node<T> {
         // 正在检测的节点为null，即键不存在于树中
         if (node == null) {
             return null;

@@ -1,9 +1,9 @@
 import AVLTree from "./lib/AVLTree.ts";
 
 const avlTree = new AVLTree();
-const printNode = value=>{
+const printNode = (value) => {
     console.log(value);
-}
+};
 /**
  *  测试树失衡
  *              30              30                       30
