@@ -1,8 +1,8 @@
-import { Graph, breadthFirstSearch, BFS, depthFirstSearch } from "./lib/Graph.ts";
+import { Graph, breadthFirstSearch, BFS, depthFirstSearch, DFS } from "./lib/Graph.ts";
 import Stack from "../StackTest/lib/Stack.ts";
 
-const graph = new Graph();
-const vertices = ["A", "B", "C", "D", "E", "F", "G", "H", "I"];
+let graph = new Graph();
+let vertices = ["A", "B", "C", "D", "E", "F", "G", "H", "I"];
 for (let i = 0; i < vertices.length; i++) {
     graph.addVertex(vertices[i]);
 }
@@ -22,6 +22,7 @@ console.log(graph.toString());
 const printVertices = (val) => {
     console.log(val);
 };
+console.log("广度优先搜索访问顺序");
 breadthFirstSearch(graph, vertices[0], printVertices);
 // 用bfs求最短路径
 const shortestPaths = BFS(graph, vertices[0]);
@@ -54,3 +55,36 @@ for (let i = 1; i < vertices.length; i++) {
 // 测试深度优先搜索
 console.log("深度优先搜索节点访问顺序");
 depthFirstSearch(graph, printVertices);
+// 测试优化后的深度优先搜索
+console.log(DFS(graph));
+
+// 实现拓扑排序
+graph = new Graph(true);
+vertices = ["A", "B", "C", "D", "E", "F"];
+for (let i = 0; i < vertices.length; i++) {
+    graph.addVertex(vertices[i]);
+}
+graph.addEdge("A", "C");
+graph.addEdge("A", "D");
+graph.addEdge("B", "D");
+graph.addEdge("B", "E");
+graph.addEdge("C", "F");
+graph.addEdge("F", "E");
+const result = DFS(graph);
+console.log("拓扑排序");
+console.log(result);
+const fTimes = result.finished;
+let s = "";
+for (let count = 0; count < vertices.length; count++) {
+    let max = 0;
+    let maxName = null;
+    for (let i = 0; i < vertices.length; i++) {
+        if (fTimes[vertices[i]] > max) {
+            max = fTimes[vertices[i]];
+            maxName = vertices[i];
+        }
+    }
+    s += maxName + " - ";
+    delete fTimes[maxName];
+}
+console.log(s);

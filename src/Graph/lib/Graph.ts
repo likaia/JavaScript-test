@@ -13,6 +13,10 @@ export enum Colors {
     BLACK = 3
 }
 
+/**
+ * 顶点初始化
+ * @param vertices 顶点列表
+ */
 const initializeColor = (vertices: (number | string)[]) => {
     const color: { [key: string]: number } = {};
     for (let i = 0; i < vertices.length; i++) {
@@ -132,8 +136,8 @@ export const BFS = (
 
 /**
  * 深度优先搜索
- * @param graph
- * @param callback
+ * @param graph 要进行遍历的图
+ * @param callback 回调函数
  */
 export const depthFirstSearch = (graph: Graph, callback: (val: string | number) => void): void => {
     // 获取图的顶点
@@ -144,30 +148,121 @@ export const depthFirstSearch = (graph: Graph, callback: (val: string | number) 
     const color = initializeColor(vertices);
 
     for (let i = 0; i < vertices.length; i++) {
+        // 如果当前顶点未被访问
         if (color[vertices[i]] === Colors.WHITE) {
+            // 调用递归函数进行递归访问
             depthFirstSearchVisit(vertices[i], color, adjList, callback);
         }
     }
 };
 
+/**
+ * 递归访问顶点
+ * @param u 要访问的顶点
+ * @param color 颜色对象
+ * @param adjList 图的临接表
+ * @param callback 回调函数
+ */
 const depthFirstSearchVisit = (
     u: string | number,
     color: { [p: string]: number },
     adjList: Dictionary<string | number, (string | number)[]>,
     callback: (val: string | number) => void
 ) => {
+    // 顶点u访问后，标识为已访问但未被探索状态
     color[u] = Colors.GERY;
+    // 执行回调函数
     if (callback) {
         callback(u);
     }
+    // 获取当前顶点的临接表
     const neighbors = <string | number[]>adjList.get(u);
+    // 遍历临接表
     for (let i = 0; i < neighbors.length; i++) {
+        // 获取临接表的每个顶点w
         const w = neighbors[i];
+        // 如果w未被访问则以w为顶点进行递归访问
         if (color[w] === Colors.WHITE) {
             depthFirstSearchVisit(w, color, adjList, callback);
         }
     }
+    // u标识为已被完全探索
     color[u] = Colors.BLACK;
+};
+
+/**
+ * 优化后的深度优先搜索
+ * @param graph 要进行搜索的图
+ * @constructor
+ */
+export const DFS = (
+    graph: Graph
+): { predecessors: { [key: string]: string | number | null }; discovery: { [key: string]: string | number }; finished: { [key: string]: string | number } } => {
+    const vertices = <(number | string)[]>graph.getVertices();
+    const adjList = graph.getAdjList();
+    const color = initializeColor(vertices);
+    const d: { [key: string]: string | number } = {};
+    const f: { [key: string]: string | number } = {};
+    const p: { [key: string]: string | number | null } = {};
+    const time: { [key: string]: number } = { count: 0 };
+    for (let i = 0; i < vertices.length; i++) {
+        f[vertices[i]] = 0;
+        d[vertices[i]] = 0;
+        p[vertices[i]] = null;
+    }
+    for (let i = 0; i < vertices.length; i++) {
+        if (color[vertices[i]] === Colors.WHITE) {
+            // 从i顶点开始递归访问
+            DFSVisit(vertices[i], color, d, f, p, time, adjList);
+        }
+    }
+
+    return {
+        discovery: d,
+        finished: f,
+        predecessors: p
+    };
+};
+
+/**
+ * 递归访问顶点
+ * @param u 要访问的顶点
+ * @param color 颜色对象
+ * @param d 顶点初次发现时间
+ * @param f 顶点完成访问时间
+ * @param p 前溯点
+ * @param time 初始时间
+ * @param adjList 临接表
+ * @constructor
+ */
+const DFSVisit = (
+    u: string | number,
+    color: { [p: string]: number },
+    d: { [key: string]: string | number },
+    f: { [key: string]: string | number },
+    p: { [key: string]: string | number | null },
+    time: { [key: string]: number },
+    adjList: Dictionary<string | number, (string | number)[]>
+) => {
+    // 顶点u被发现但未被探索
+    color[u] = Colors.GERY;
+    // 记录顶点u的初次发现时间
+    d[u] = ++time["count"];
+    // 获取顶点u的临接表
+    const neighbors = <(string | number)[]>adjList.get(u);
+    for (let i = 0; i < neighbors.length; i++) {
+        // 获取w临接点
+        const w = neighbors[i];
+        // 如果w未被访问，存储w的前溯点，以w未顶点继续递归访问
+        if (color[w] === Colors.WHITE) {
+            p[w] = u;
+            DFSVisit(w, color, d, f, p, time, adjList);
+        }
+    }
+    // 顶点被完全访问
+    color[u] = Colors.BLACK;
+    // 记录顶点完成访问时间
+    f[u] = ++time["count"];
 };
 
 export class Graph {
@@ -175,6 +270,7 @@ export class Graph {
     private vertices: (number | string)[] = [];
     // 存储临接表
     private adjList: Dictionary<string | number, (string | number)[]> = new Dictionary();
+
     constructor(private isDirected: boolean = false) {}
 
     // 添加顶点
