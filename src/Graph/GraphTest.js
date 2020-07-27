@@ -1,4 +1,4 @@
-import { Graph, breadthFirstSearch, BFS } from "./lib/Graph.ts";
+import { Graph, breadthFirstSearch, BFS, depthFirstSearch } from "./lib/Graph.ts";
 import Stack from "../StackTest/lib/Stack.ts";
 
 const graph = new Graph();
@@ -50,3 +50,7 @@ for (let i = 1; i < vertices.length; i++) {
     }
     console.log(s);
 }
+
+// 测试深度优先搜索
+console.log("深度优先搜索节点访问顺序");
+depthFirstSearch(graph, printVertices);

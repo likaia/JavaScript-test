@@ -130,7 +130,12 @@ export const BFS = (
     };
 };
 
-const depthFirstSearch = (graph: Graph, callback: (val: string) => void): void => {
+/**
+ * 深度优先搜索
+ * @param graph
+ * @param callback
+ */
+export const depthFirstSearch = (graph: Graph, callback: (val: string | number) => void): void => {
     // 获取图的顶点
     const vertices = graph.getVertices();
     // 获取图的临接表
@@ -140,9 +145,29 @@ const depthFirstSearch = (graph: Graph, callback: (val: string) => void): void =
 
     for (let i = 0; i < vertices.length; i++) {
         if (color[vertices[i]] === Colors.WHITE) {
-            //
+            depthFirstSearchVisit(vertices[i], color, adjList, callback);
         }
     }
+};
+
+const depthFirstSearchVisit = (
+    u: string | number,
+    color: { [p: string]: number },
+    adjList: Dictionary<string | number, (string | number)[]>,
+    callback: (val: string | number) => void
+) => {
+    color[u] = Colors.GERY;
+    if (callback) {
+        callback(u);
+    }
+    const neighbors = <string | number[]>adjList.get(u);
+    for (let i = 0; i < neighbors.length; i++) {
+        const w = neighbors[i];
+        if (color[w] === Colors.WHITE) {
+            depthFirstSearchVisit(w, color, adjList, callback);
+        }
+    }
+    color[u] = Colors.BLACK;
 };
 
 export class Graph {
