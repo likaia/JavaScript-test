@@ -56,7 +56,7 @@ export class MinHeap<T> {
     }
 
     // 交换节点
-    private heapify(array: T[], size: number, index: number) {
+    private heapify(array: T[], size: number, index: number): boolean | void {
         // 递归基线条件
         if (index >= size) {
             return false;
