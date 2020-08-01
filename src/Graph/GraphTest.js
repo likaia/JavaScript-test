@@ -56,8 +56,8 @@ for (let i = 1; i < vertices.length; i++) {
 console.log("深度优先搜索节点访问顺序");
 depthFirstSearch(graph, printVertices);
 // 测试优化后的深度优先搜索
+console.log("优化后的深度优先搜索");
 console.log(DFS(graph));
-
 // 实现拓扑排序
 graph = new Graph(true);
 vertices = ["A", "B", "C", "D", "E", "F"];
@@ -72,7 +72,6 @@ graph.addEdge("C", "F");
 graph.addEdge("F", "E");
 const result = DFS(graph);
 console.log("拓扑排序");
-console.log(result);
 const fTimes = result.finished;
 let s = "";
 for (let count = 0; count < vertices.length; count++) {

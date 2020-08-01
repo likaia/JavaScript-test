@@ -141,18 +141,52 @@ export class Sort<T> {
         return i;
     }
 
-    // 计数排序
-    countingSort() {
-        if (this.array.length < 2) {
-            return this.array;
+    /**
+     * 计数排序
+     * 1. 找到要排序数组的最大值
+     * 2. 以上一步找到的最大值+1为长度创建一个计数数组
+     * 3. 遍历要排序的数组，以当前遍历到的元素为索引，寻找计数数组中对应的位置将其初始化为0，如果此处位置有相同元素的话就自增
+     * 4. 遍历计数数组，判断当前遍历到的元素值是否大于0，如果大于0就取当前遍历到的索引，替换array中的元素
+     * @param array 需要进行排序的数组
+     */
+    countingSort(array: number[]): number[] {
+        // 待排序数组为空或只有一个元素则不用排序
+        if (array.length < 2) {
+            return array;
         }
-        const maxValue = this.findMaxValue(this.array);
+        // 找到待排序数组中的最大值
+        const maxValue = this.findMaxValue(array);
 
+        // 创建计数数组，数组长度为待排序数组的最大值+1
         const counts = new Array(maxValue + 1);
+        // 遍历待排序数组，为计数数组赋值
+        array.forEach((element) => {
+            // 以当前遍历到的元素值为索引将对应位置元素值初始化为0
+            if (!counts[element]) {
+                counts[element] = 0;
+            }
+            // 当前位置的值进行自增，顺便应对数组中有重复值的情况，有重复值时当前位置的值必定大于1
+            counts[element]++;
+        });
+
+        // 声明一个变量用于数组最终排序
+        let sortedIndex = 0;
+        // 遍历计数数组，根据计数数组的元素位置对待排序数组进行排序
+        counts.forEach((count, i) => {
+            // 如果当前遍历到的元素值大于0，则执行替换操作进行排序
+            while (count > 0) {
+                // 将当前元素索引赋值给array的sortedIndex号元素，随后sortedIndex自增
+                array[sortedIndex++] = i;
+                // 当前元素值自减，如果其值大于1，证明此处有重复元素，那么我们就继续执行while循环
+                count--;
+            }
+        });
+        // 最后，排序完成，返回排序好的数组
+        return array;
     }
 
     // 寻找数组中的最大值
-    private findMaxValue(array: T[]): number {
+    private findMaxValue = (array: number[]): number => {
         let max: number = array[0];
         for (let i = 0; i < array.length; i++) {
             if (array[i] > max) {
@@ -161,7 +195,7 @@ export class Sort<T> {
         }
 
         return max;
-    }
+    };
 
     /**
      * 交换数组元素位置
