@@ -44,21 +44,21 @@ export class Sort<T> {
     }
 
     // 插入排序
-    insertionSort(): void {
-        const { length } = this.array;
+    insertionSort(array: T[] = this.array): void {
+        const { length } = array;
         let temp;
         // 假设0号元素已经排好序，从1号元素开始遍历数组
         for (let i = 1; i < length; i++) {
             // 声明辅助变量存储当前i的位置以及其对应的值
             let j = i;
-            temp = this.array[i];
+            temp = array[i];
             // j大于0且j-1位置的元素大于i号位置的元素就把j-1处的值移动到j处，最后j--
-            while (j > 0 && this.compareFn(this.array[j - 1], temp) === Compare.BIGGER_THAN) {
-                this.array[j] = this.array[j - 1];
+            while (j > 0 && this.compareFn(array[j - 1], temp) === Compare.BIGGER_THAN) {
+                array[j] = array[j - 1];
                 j--;
             }
             // 将temp放到正确的位置
-            this.array[j] = temp;
+            array[j] = temp;
         }
     }
 
@@ -183,6 +183,62 @@ export class Sort<T> {
         });
         // 最后，排序完成，返回排序好的数组
         return array;
+    }
+
+    // 桶排序
+    bucketSort(array: number[], bucketSize = 5): T[] | number[] {
+        if (array.length < 2) {
+            return array;
+        }
+        // 创建桶，对桶进行排序
+        return this.sortBuckets(<[][]>this.createBuckets(array, bucketSize));
+    }
+
+    // 创建桶
+    private createBuckets = (array: number[], bucketSize: number): number[][] => {
+        // 计算数组最大值与最小值
+        let minValue = array[0];
+        let maxValue = array[0];
+        for (let i = 1; i < array.length; i++) {
+            if (array[i] < minValue) {
+                minValue = array[i];
+            } else if (array[i] > maxValue) {
+                maxValue = array[i];
+            }
+        }
+
+        // 计算每个桶中需要分布的元素个数，公式为: 数组最大值与最小值的差值与桶大小进行除法运算
+        const bucketCount = Math.floor((maxValue - minValue) / bucketSize) + 1;
+        // 用于存放桶的二维数组
+        const buckets: number[][] = [];
+
+        // 计算出桶大小后，初始化每个桶
+        for (let i = 0; i < bucketCount; i++) {
+            buckets[i] = [];
+        }
+
+        // 遍历数组，将每个元素分布到桶中
+        for (let i = 0; i < array.length; i++) {
+            // 计算需要将元素放到哪个桶中，公式为: 当前遍历到的元素值与数组的最小值的差值与桶大小进行除法运算
+            const bucketIndex: number = Math.floor((array[i] - minValue) / bucketSize);
+            // 将元素放进合适的桶中
+            buckets[bucketIndex].push(array[i]);
+        }
+        // 将桶返回
+        return buckets;
+    };
+
+    // 对每个桶进行排序
+    sortBuckets(buckets: T[][]): T[] {
+        const sortedArray: T[] = [];
+        for (let i = 0; i < buckets.length; i++) {
+            if (buckets[i] != null) {
+                // 调用插入排序
+                this.insertionSort(buckets[i]);
+                sortedArray.push(...buckets[i]);
+            }
+        }
+        return sortedArray;
     }
 
     // 寻找数组中的最大值
