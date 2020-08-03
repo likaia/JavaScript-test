@@ -194,7 +194,13 @@ export class Sort<T> {
         return this.sortBuckets(<[][]>this.createBuckets(array, bucketSize));
     }
 
-    // 创建桶
+    /**
+     * 创建桶
+     * @param array 待排序数组
+     * @param bucketSize 桶大小，即每个桶里的元素数量
+     *
+     * @return 二维数组类型的桶
+     */
     private createBuckets = (array: number[], bucketSize: number): number[][] => {
         // 计算数组最大值与最小值
         let minValue = array[0];
@@ -235,6 +241,7 @@ export class Sort<T> {
             if (buckets[i] != null) {
                 // 调用插入排序
                 this.insertionSort(buckets[i]);
+                // 将排序好的桶取出来，放进sortedArray中
                 sortedArray.push(...buckets[i]);
             }
         }
