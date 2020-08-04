@@ -235,7 +235,7 @@ export class Sort<T> {
     };
 
     // 对每个桶进行排序
-    sortBuckets(buckets: T[][]): T[] {
+    private sortBuckets(buckets: T[][]): T[] {
         const sortedArray: T[] = [];
         for (let i = 0; i < buckets.length; i++) {
             if (buckets[i] != null) {
@@ -248,6 +248,74 @@ export class Sort<T> {
         return sortedArray;
     }
 
+    /**
+     * 基数排序
+     * @param array 待排序数组
+     * @param radixBase 10进制排序，基数为10
+     */
+    radixSort(array: number[], radixBase = 10): number[] {
+        if (array.length < 2) {
+            return array;
+        }
+        // 获取数组的最小值和最大值
+        const minValue = this.findMinValue(array);
+        const maxValue = this.findMaxValue(array);
+        // 当前有效数字,默认会从最后一位有效数字开始排序
+        let significantDigit = 1;
+
+        /**
+         * 计算有效位
+         * 最大值和最小值的差与有效数字进行除法运算，其值大于等于1就代表还有待排序的有效位
+         */
+        while ((maxValue - minValue) / significantDigit >= 1) {
+            // 以当前有效位为参数对数组进行排序
+            array = this.countingSortForRadix(array, radixBase, significantDigit, minValue);
+            // 当前有效数字乘以基数，继续执行while循环进行基数排序
+            significantDigit *= radixBase;
+        }
+        return array;
+    }
+
+    /**
+     * 基于有效位进行排序
+     * @param array 待排序数组
+     * @param radixBase 基数
+     * @param significantDigit 有效位
+     * @param minValue 待排序数组的最小值
+     */
+    private countingSortForRadix = (array: number[], radixBase: number, significantDigit: number, minValue: number) => {
+        // 声明桶索引以及桶
+        let bucketsIndex;
+        const buckets = [];
+        // 辅助数组，用于计数完成的值移动会原数组
+        const aux = [];
+        // 通过基数来初始化桶
+        for (let i = 0; i < radixBase; i++) {
+            buckets[i] = 0;
+        }
+
+        // 遍历待排序数组，基于有效位计算桶索引执行计数排序
+        for (let i = 0; i < array.length; i++) {
+            // 计算桶索引
+            bucketsIndex = Math.floor(((array[i] - minValue) / significantDigit) % radixBase);
+            // 执行计数排序
+            buckets[bucketsIndex]++;
+        }
+
+        // 计算累积结果得到正确的计数值
+        for (let i = 1; i < radixBase; i++) {
+            buckets[i] += buckets[i - 1];
+        }
+
+        // 计数完成，将值移回原始数组中,用aux辅助数组来存储
+        for (let i = array.length - 1; i >= 0; i--) {
+            bucketsIndex = Math.floor(((array[i] - minValue) / significantDigit) % radixBase);
+            // 对当前桶索引-1然后将元素放进去
+            aux[--buckets[bucketsIndex]] = array[i];
+        }
+        return aux;
+    };
+
     // 寻找数组中的最大值
     private findMaxValue = (array: number[]): number => {
         let max: number = array[0];
@@ -258,6 +326,18 @@ export class Sort<T> {
         }
 
         return max;
+    };
+
+    // 寻找数组中的最小值
+    private findMinValue = (array: number[]) => {
+        let min: number = array[0];
+        for (let i = 0; i < array.length; i++) {
+            if (array[i] < min) {
+                min = array[i];
+            }
+        }
+
+        return min;
     };
 
     /**
