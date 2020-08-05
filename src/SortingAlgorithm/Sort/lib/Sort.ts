@@ -304,15 +304,19 @@ export class Sort<T> {
 
         // 计算累积结果得到正确的计数值
         for (let i = 1; i < radixBase; i++) {
-            buckets[i] += buckets[i - 1];
+            buckets[i] = buckets[i] + buckets[i - 1];
         }
 
         // 计数完成，将值移回原始数组中,用aux辅助数组来存储
         for (let i = array.length - 1; i >= 0; i--) {
+            // 计算当前元素的桶索引
             bucketsIndex = Math.floor(((array[i] - minValue) / significantDigit) % radixBase);
-            // 对当前桶索引-1然后将元素放进去
-            aux[--buckets[bucketsIndex]] = array[i];
+            // 对当前桶索引内的元素执行自减操作,得到其在数组中的正确的位置
+            const index = --buckets[bucketsIndex];
+            // 计算出索引后，在aux中的对应位置存储当前遍历到的元素
+            aux[index] = array[i];
         }
+        console.log(aux);
         return aux;
     };
 
