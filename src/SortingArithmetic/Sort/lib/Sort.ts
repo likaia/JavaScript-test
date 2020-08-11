@@ -82,8 +82,10 @@ export class Sort<T> {
         let j = 0;
         const result: T[] = [];
         while (i < left.length && j < right.length) {
+            // 如果left[i] < right[j]将left[i]加进result中，随后i自增，否则把right[j]加进result中，随后j自增
             result.push(this.compareFn(left[i], right[j]) === Compare.LESS_THAN ? left[i++] : right[j++]);
         }
+        // 将left或right数组的剩余项添加进result中
         return result.concat(i < left.length ? left.slice(i) : right.slice(j));
     }
 
