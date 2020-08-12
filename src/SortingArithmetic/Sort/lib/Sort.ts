@@ -94,8 +94,15 @@ export class Sort<T> {
         return this.quick(this.array, 0, this.array.length - 1);
     }
 
+    /**
+     *
+     * @param array 待排序数组
+     * @param left 左边界
+     * @param right 右边界
+     * @private
+     */
     private quick(array: T[], left: number, right: number) {
-        // 改变量用于将子数组分离为较小值数组和较大值数组
+        // 该变量用于将子数组分离为较小值数组和较大值数组
         let index;
         if (array.length > 1) {
             // 对给定子数组执行划分操作，得到正确的index
