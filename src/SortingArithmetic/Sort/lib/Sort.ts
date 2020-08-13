@@ -222,12 +222,12 @@ export class Sort<T> {
             }
         }
 
-        // 计算每个桶中需要分布的元素个数，公式为: 数组最大值与最小值的差值与桶大小进行除法运算
+        // 计算需要的桶数量，公式为: 数组最大值与最小值的差值与桶大小进行除法运算
         const bucketCount = Math.floor((maxValue - minValue) / bucketSize) + 1;
         // 用于存放桶的二维数组
         const buckets: number[][] = [];
 
-        // 计算出桶大小后，初始化每个桶
+        // 计算出桶数量后，初始化每个桶
         for (let i = 0; i < bucketCount; i++) {
             buckets[i] = [];
         }
