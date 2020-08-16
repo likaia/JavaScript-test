@@ -307,7 +307,7 @@ export class Sort<T> {
         for (let i = 0; i < array.length; i++) {
             // 计算桶索引
             bucketsIndex = Math.floor(((array[i] - minValue) / significantDigit) % radixBase);
-            // 执行计数排序
+            // 执行计数操作
             buckets[bucketsIndex]++;
         }
 
@@ -325,7 +325,6 @@ export class Sort<T> {
             // 计算出索引后，在aux中的对应位置存储当前遍历到的元素
             aux[index] = array[i];
         }
-        console.log(aux);
         return aux;
     };
 

@@ -84,4 +84,41 @@ export class SearchArithmetic<T> {
         // 未找到
         return null;
     }
+
+    // 二分搜索: 递归实现
+    binarySearchR(): number | null {
+        this.sort.quickSort();
+        const low = 0;
+        const high = this.array.length - 1;
+
+        return this.binarySearchRecursive(this.array, this.target, low, high);
+    }
+
+    /**
+     * 二分搜索递归辅助函数
+     * @param array 待排序数组
+     * @param value 目标值
+     * @param low 数组起始位置
+     * @param high 数组结束位置
+     */
+    binarySearchRecursive(array = this.array, value = this.target, low: number, high: number): number | null {
+        if (low <= high) {
+            // 计算中间值索引
+            const mid = Math.floor((low + high) / 2);
+            // 获取中间值
+            const element = array[mid];
+
+            if (this.compareFn(element, value) === Compare.LESS_THAN) {
+                // element < value时就从数组的mid+1位置找到high位置，即中间值的右侧
+                return this.binarySearchRecursive(array, value, mid + 1, high);
+            } else if (this.compareFn(element, value) === Compare.BIGGER_THAN) {
+                // element > value时就从数组的low位置找到mid-1位置，即中间值的左侧
+                return this.binarySearchRecursive(array, value, low, mid - 1);
+            } else {
+                // 目标值找到，返回索引
+                return mid;
+            }
+        }
+        return null;
+    }
 }
