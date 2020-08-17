@@ -96,10 +96,10 @@ export class SearchArithmetic<T> {
 
     /**
      * 二分搜索递归辅助函数
-     * @param array 待排序数组
+     * @param array 分解后的数组
      * @param value 目标值
-     * @param low 数组起始位置
-     * @param high 数组结束位置
+     * @param low 数组起始分解点
+     * @param high 数组末尾分解点
      */
     binarySearchRecursive(array = this.array, value = this.target, low: number, high: number): number | null {
         if (low <= high) {
