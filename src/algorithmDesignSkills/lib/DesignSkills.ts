@@ -1,14 +1,10 @@
 export class DesignSkills {
-    constructor(private data: [] = []) {
-        this.data = [];
-    }
-
     /**
      *
      * @param coins 硬币面额
      * @param amount 找零总金额
      */
-    minCoinChange(coins: [], amount: number) {
+    minCoinChange(coins: number[], amount: number): number[] {
         // 记忆化技巧，目的是更小且不重复计算值
         const cache: number[][] = [];
         const makeChange = (amount: number) => {
