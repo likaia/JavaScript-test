@@ -23,13 +23,17 @@ export class DesignSkills {
                 const coin = coins[i];
                 newAmount = amount - coin;
                 if (newAmount >= 0) {
+                    // 将newAmount加入递归栈
                     newMin = makeChange(newAmount);
                 }
 
+                // 递归执行完成，条件如果满足，就将当前硬币
                 if (newAmount >= 0 && (newMin.length < min.length - 1 || !min.length) && (newMin.length || !newAmount)) {
+                    // 取出当前递归栈中保存的coin值，将其与newMin数组进行拼接，将结果赋值给min
                     min = [coin].concat(newMin);
                 }
             }
+            // 将min赋值给cache[amount]，将结果返回，其结果就是当前栈的返回值，即newMin的值
             return (cache[amount] = min);
         };
         return makeChange(amount);
