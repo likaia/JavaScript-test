@@ -63,6 +63,7 @@ export class DesignSkills {
                     // 物品i的重量必须小于约束
                     const a = values[i - 1] + kS[i - 1][w - weights[i - 1]];
                     const b = kS[i - 1][w];
+                    console.log(`i = ${i} :( a = ${a} , b = ${b})`);
                     // 当找到可以构成解决方案的物品时，选择价值最大的那个
                     kS[i][w] = a > b ? a : b;
                 } else {
@@ -76,16 +77,29 @@ export class DesignSkills {
         return kS[n][capacity];
     }
 
+    /**
+     * 寻找背包物品可组成方案组合
+     * @param n 物品数量
+     * @param capacity 背包容量
+     * @param kS 背包最大价值矩阵
+     * @param weights 物品的重量
+     * @param values 物品的价值
+     * @private
+     */
     private static findValues(n: number, capacity: number, kS: number[][], weights: number[], values: number[]): void {
         let i = n;
         let k = capacity;
-        console.log("gou cheng jie de wu pin ");
+        console.log("构成解的物品");
+        // 物品数量和背包容量都大于0就执行循环
         while (i > 0 && k > 0) {
             if (kS[i][k] !== kS[i - 1][k]) {
-                console.log(`wu pin ${i} ke yi shi jie de yi bu fen w,v: ${weights[i - 1]}, ${values[i - 1]};`);
+                // kS[i][k]位置的值不等于kS[i-1][k]位置的值就是一种方案,将其取出
+                console.log(`物品 ${i} 可以是解的一部分 w,v: ${weights[i - 1]}, ${values[i - 1]};`);
+                // 取出后i与k重新赋值
                 i--;
                 k -= kS[i][k];
             } else {
+                // 向上找
                 i--;
             }
         }
