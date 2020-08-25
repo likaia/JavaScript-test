@@ -63,7 +63,6 @@ export class DesignSkills {
                     // 物品i的重量必须小于约束
                     const a = values[i - 1] + kS[i - 1][w - weights[i - 1]];
                     const b = kS[i - 1][w];
-                    console.log(`i = ${i} :( a = ${a} , b = ${b})`);
                     // 当找到可以构成解决方案的物品时，选择价值最大的那个
                     kS[i][w] = a > b ? a : b;
                 } else {

@@ -7,4 +7,4 @@ const values = [3, 4, 5],
     weights = [2, 3, 4],
     capacity = 5,
     n = values.length;
-console.log(designSkills.knapSack(capacity, weights, values, n));
+console.log("所有组成方案的最大价值为", designSkills.knapSack(capacity, weights, values, n));
