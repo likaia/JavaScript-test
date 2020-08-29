@@ -106,8 +106,8 @@ export class DesignSkills {
 
     /**
      * 最长公共子序列
-     * @param wordX
-     * @param wordY
+     * @param wordX 字符串1
+     * @param wordY 字符串2
      */
     lcs(wordX: string, wordY: string): number {
         // 获取两个子序列的长度
@@ -125,17 +125,20 @@ export class DesignSkills {
         for (let i = 0; i <= m; i++) {
             for (let j = 0; j <= n; j++) {
                 if (i === 0 || j === 0) {
+                    // i为0或者j为0，此处的格子就填充为0
                     l[i][j] = 0;
                 } else if (wordX[i - 1] === wordY[j - 1]) {
+                    // 字符串1的i-1位置的值等于字符串2的j-1位置的值
                     l[i][j] = l[i - 1][j - 1] + 1;
                 } else {
+                    // 否则，取出a、b位置的值，选出一个较大值进行填充
                     const a = l[i - 1][j];
                     const b = l[i][j - 1];
                     l[i][j] = a > b ? a : b;
                 }
             }
         }
-
+        // 最后一个格子即最长公共子序列的长度
         return l[m][n];
     }
 
@@ -150,6 +153,7 @@ export class DesignSkills {
         const n = wordY.length;
         // 声明并初始化二维数组，用于存放矩阵
         const l: number[][] = [];
+        // 存放用于推导组合的矩阵
         const solution: string[][] = [];
         for (let i = 0; i <= m; i++) {
             l[i] = [];
@@ -166,25 +170,27 @@ export class DesignSkills {
                     l[i][j] = 0;
                 } else if (wordX[i - 1] === wordY[j - 1]) {
                     l[i][j] = l[i - 1][j - 1] + 1;
+                    // 如果相等则填充diagonal
                     solution[i][j] = "diagonal";
                 } else {
                     const a = l[i - 1][j];
                     const b = l[i][j - 1];
                     l[i][j] = a > b ? a : b;
+                    // 如果相等就填充top否则填充left
                     solution[i][j] = l[i][j] == l[i - 1][j] ? "top" : "left";
                 }
             }
         }
-
+        // 求组合方案
         return DesignSkills.getSolution(solution, wordX, m, n);
     }
 
     /**
      * 根据最长公共子序列矩阵推导其组合方案
      * @param solution 最长公共子序列矩阵
-     * @param wordX
-     * @param m
-     * @param n
+     * @param wordX 字符串1
+     * @param m 矩阵的x轴指向
+     * @param n 矩阵的y轴指向
      * @private
      */
     private static getSolution(solution: string[][], wordX: string, m: number, n: number): string {
@@ -194,6 +200,7 @@ export class DesignSkills {
         let answer = "";
         while (x !== "0") {
             if (solution[a][b] === "diagonal") {
+                // 相等就将其取出
                 answer = wordX[a - 1] + answer;
                 a--;
                 b--;
@@ -202,8 +209,10 @@ export class DesignSkills {
             } else if (solution[a][b] === "top") {
                 a--;
             }
+            // 重新赋值，继续下一轮循环
             x = solution[a][b];
         }
+        // 返回组合方案
         return answer;
     }
 }
