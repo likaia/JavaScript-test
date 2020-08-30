@@ -11,3 +11,6 @@ console.log("所有组成方案的最大价值为", designSkills.knapSack(capaci
 
 const solution = designSkills.lcsSolution("acbaed", "abcadf");
 console.log(solution);
+
+const p = [10, 100, 5, 50, 1];
+console.log(designSkills.matrixChainOrder(p));
