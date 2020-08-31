@@ -73,6 +73,45 @@ export class Vector {
         return this.mul(-1);
     }
 
+    // 求向量的模
+    norm(): number {
+        // 对向量的每个维度的值进行平方求和运算
+        let sum = 0;
+        for (let i = 0; i < this.getDimension(); i++) {
+            sum += this.getItem(i) ** 2;
+        }
+        // 对求出的和进行平方根运算
+        return Math.sqrt(sum);
+    }
+
+    // 求单位向量
+    normalize(): Vector {
+        const finalList: number[] = [];
+        // 单位向量的求法：用向量中的每个维度的元素除以当前向量的模，将每个求出的元素放进新的向量中，将其返回
+        const norm = this.norm();
+        if (norm === 0) {
+            throw "向量的模不能为0";
+        }
+        for (let i = 0; i < this.getDimension(); i++) {
+            finalList.push(this.getItem(i) / norm);
+        }
+        return new Vector(finalList);
+    }
+
+    // 两个向量的点乘
+    dotMul(another: Vector): number | void {
+        if (another.getDimension() === this.getDimension()) {
+            let final = 0;
+            // 两个向量点乘的方法: 将每个向量中的元素互相进行乘法运算，将得到的结果相加
+            for (let i = 0; i < this.getDimension(); i++) {
+                final += this.getItem(i) * another.getItem(i);
+            }
+            return final;
+        } else {
+            console.log("两个向量点乘时其维度必须相等");
+        }
+    }
+
     // 零向量
     public static zero(dim: number): Vector {
         return new Vector(new Array(dim).fill(0));

@@ -1,6 +1,6 @@
 import { Vector } from "./lib/Vector.ts";
 
-const list = [5, 10];
+const list = [5, 2];
 const vector = new Vector(list);
 console.log(vector.toStr());
 const list1 = [15, 5];
@@ -13,3 +13,7 @@ console.log(vector.neg().toStr());
 console.log(Vector.zero(4));
 const zero2 = Vector.zero(2);
 console.log(vector.add(zero2).toStr());
+console.log(vector.norm());
+console.log(vector.normalize());
+console.log(vector.normalize().norm());
+console.log(vector.dotMul(vector1));
