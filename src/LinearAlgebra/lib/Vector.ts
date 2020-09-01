@@ -127,6 +127,6 @@ export class Vector {
                 str += this.list[i];
             }
         }
-        return `(${str})`;
+        return `Vector(${str})`;
     }
 }
