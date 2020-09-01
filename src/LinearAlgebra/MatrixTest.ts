@@ -1,4 +1,5 @@
 import { Matrix } from "./lib/Matrix.ts";
+import { Vector } from "./lib/Vector.ts";
 
 const list2d = [
     [1, 3],
@@ -24,3 +25,6 @@ console.log(matrix.add(matrix1));
 console.log(matrix.mul(2));
 console.log(matrix.division(2));
 console.log(Matrix.zero(5, 5));
+// 矩阵与向量相乘
+const vector = new Vector([1, 2]);
+console.log(matrix.MulVector(vector));

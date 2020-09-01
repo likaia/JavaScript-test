@@ -152,6 +152,37 @@ export class Matrix {
         return new Matrix(finalList);
     }
 
+    /**
+     * 矩阵与向量相乘
+     * @param vector 进行乘法运算的的向量
+     * @return Vector 生成的新向量
+     */
+    MulVector(vector: Vector): Vector | void {
+        // 矩阵与向量相乘时其列数必须相等
+        if (vector.len === this.getColNum()) {
+            // 结果数组
+            const finalList: number[] = [];
+            // 计算规则:
+            //    1. 用矩阵的每一项的与向量的每一项做乘法运算
+            //    2. 将得到的结果累加
+            //    3. 将累加的结果放进结果数组中
+            //    4. 根据结果数组构建新的向量
+            for (let i = 0; i < this.getRowNum(); i++) {
+                let result = 0;
+                for (let j = 0; j < vector.len; j++) {
+                    // 每一项进行乘法运算后，将其结果累加
+                    result += this.getItem([i, j]) * vector.getItem(j);
+                }
+                // 将每一行计算出来的累加结果放进最终结果中
+                finalList.push(result);
+            }
+            // 遍历结束，根据结果生成向量，并将其返回
+            return new Vector(finalList);
+        } else {
+            console.log("矩阵与向量相乘时，矩阵的列数必须与向量的长度相等");
+        }
+    }
+
     // 矩阵取正
     pos(): Matrix {
         return this.mul(1);
