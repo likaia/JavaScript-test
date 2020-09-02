@@ -157,7 +157,7 @@ export class Matrix {
      * @param vector 进行乘法运算的的向量
      * @return Vector 生成的新向量
      */
-    MulVector(vector: Vector): Vector | void {
+    mulVector(vector: Vector): Vector | void {
         // 矩阵与向量相乘时其列数必须相等
         if (vector.len === this.getColNum()) {
             // 结果数组
@@ -175,11 +175,44 @@ export class Matrix {
                 }
                 // 将每一行计算出来的累加结果放进最终结果中
                 finalList.push(result);
+
+                /**
+                 * 另一种优化写法：上面的计算规则与向量和向量之间的点乘相同，因此我们可以直接调用向量的点乘方法
+                 */
+                // 当前矩阵的行向量 * 向量
+                // finalList.push(<number>this.rowVector(i).dotMul(vector));
             }
             // 遍历结束，根据结果生成向量，并将其返回
             return new Vector(finalList);
         } else {
             console.log("矩阵与向量相乘时，矩阵的列数必须与向量的长度相等");
+        }
+    }
+
+    mulMatrix(matrix: Matrix): Matrix | void {
+        // 矩阵A的列数必须和矩阵P的行数相等
+        if (this.getColNum() === matrix.getRowNum()) {
+            // 存放最终结果的二维数组
+            const finalList = [];
+            // 拆分两个矩阵，将其拆分成向量与向量之间的点乘
+            for (let i = 0; i < this.getRowNum(); i++) {
+                // 存放结果行向量的数组
+                const resultList: number[] = [];
+                // 获取矩阵A的行向量
+                const rowVector = this.rowVector(i);
+                for (let j = 0; j < matrix.getColNum(); j++) {
+                    // 获取矩阵P的列向量
+                    const colVector = matrix.colVector(j);
+                    // 将行向量与列向量进行点乘，将结果放进结果行向量数组中
+                    resultList.push(<number>rowVector.dotMul(colVector));
+                }
+                // 将构建好的结果行向量放进最终结果的二维数组
+                finalList.push(resultList);
+            }
+            // 根据最终结果的二维数组构建矩阵
+            return new Matrix(finalList);
+        } else {
+            console.log("矩阵与矩阵相乘，其中一个矩阵的列数必须与另一个矩阵的行数相等");
         }
     }
 
