@@ -218,10 +218,13 @@ export class DesignSkills {
 
     // 矩阵链相乘
     matrixChainOrder(p: number[]): number {
+        // 矩阵的长度
         const n = p.length;
+        // 辅助矩阵：m存储最优次数
         const m: number[][] = [];
         const s: number[][] = [];
 
+        // 完整填充矩阵s
         for (let i = 0; i <= n; i++) {
             s[i] = [];
             for (let j = 0; j <= n; j++) {
@@ -229,25 +232,35 @@ export class DesignSkills {
             }
         }
 
+        // 对角线填充矩阵m
         for (let i = 1; i <= n; i++) {
             m[i] = [];
             m[i][i] = 0;
         }
 
+        // 更新矩阵m和s
         for (let l = 2; l < n; l++) {
             for (let i = 1; i <= n - l + 1; i++) {
+                // 计算要填充位置的值
                 const j = i + l - 1;
+                // 假设此处位置的值为最大
                 m[i][j] = Number.MAX_SAFE_INTEGER;
+                // console.table(m);
                 for (let k = 0; k <= j - 1; k++) {
+                    // 计算公式：矩阵相乘得到的次数
                     const q = m[i][k] + m[k + 1][j] + p[i - 1] * p[k] * p[j];
+                    // 如果计算出来的次数小于刚才假设的最大值就更新m矩阵和s矩阵的元素值
                     if (q < m[i][j]) {
+                        // m[i][j]处的值就是计算出来的次数
                         m[i][j] = q;
                         s[i][j] = k;
                     }
                 }
             }
         }
+        // 打印矩阵相乘组合顺序
         this.printOptimalParenthesis(s, 1, n - 1);
+        // m矩阵的第一行第i-1位置的值就是我们要的矩阵链相乘最少次数
         return m[1][n - 1];
     }
 
