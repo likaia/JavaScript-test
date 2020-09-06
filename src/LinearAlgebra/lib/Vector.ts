@@ -20,7 +20,7 @@ export class Vector {
 
     /**
      * 向量的加法运算
-     * @param another
+     * @param another 需要进行相加的向量
      */
     add(another: Vector): Vector | string {
         // 向量相加时，要确保其维度与当前维度相等
