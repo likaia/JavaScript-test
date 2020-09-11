@@ -24,4 +24,4 @@ const values = [3, 4, 5],
     capacity = 6;
 
 // 背包容量为6时, 可以装物品1和物品2以及25%的物品3
-console.log(designSkills.knapSackGreedy(capacity, weights, values));
+console.log("容量为6的背包其解决方案为：", designSkills.knapSackGreedy(capacity, weights, values));

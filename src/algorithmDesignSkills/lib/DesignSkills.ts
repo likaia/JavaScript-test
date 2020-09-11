@@ -297,9 +297,20 @@ export class DesignSkills {
         return change;
     }
 
-    // 贪心算法: 背包问题
-    knapSackGreedy(capacity: number, weights: number[], values: number[]): number {
+    /**
+     * 贪心算法: 背包问题
+     * @param capacity 背包容量
+     * @param weights 物品重量
+     * @param values 物品价值
+     */
+    knapSackGreedy(
+        capacity: number,
+        weights: number[],
+        values: number[]
+    ): { val: number; compose: ({ dart: boolean; scale: number; id: number } | { dart: boolean; id: number })[] } {
         const n = values.length;
+        // 存储解决方案
+        const compose = [];
         // 已装入背包的物品总重量
         let load = 0;
         // 已装入背包的物品总价值
@@ -311,6 +322,8 @@ export class DesignSkills {
                 val += values[i];
                 // 将物品的重量计入背包已装入物品的总重量
                 load += weights[i];
+                // 当前物品可以完整放入，将物品编号放入组合方案中
+                compose.push({ id: i, dart: false });
             } else {
                 // 物品无法完整的放入背包，计算能够装入部分的比例
                 const r = (capacity - load) / weights[i];
@@ -318,10 +331,12 @@ export class DesignSkills {
                 val += r * values[i];
                 // 将物品的重量计入背包已装入物品的总重量
                 load += weights[i];
+                // 当前物品无法完整放入，将物品编号和可放物品比例放入组合方案中
+                compose.push({ id: i, dart: true, scale: r });
             }
         }
 
         // 返回物品总价值
-        return val;
+        return { val: val, compose: compose };
     }
 }
