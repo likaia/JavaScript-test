@@ -275,4 +275,53 @@ export class DesignSkills {
             console.log(")");
         }
     }
+
+    // 贪心算法: 最少硬币找零
+    minCoinChangeGreedy(coins: number[], amount: number): number[] {
+        // 找零方案
+        const change: number[] = [];
+        // 总金额
+        let total = 0;
+        for (let i = coins.length; i >= 0; i--) {
+            // 当前取出的面值
+            const coin = coins[i];
+            // 当前取出的面值+总金额必须小于找零金额
+            while (total + coin <= amount) {
+                // 将当前面值放进找零方案中
+                change.push(coin);
+                // 总金额+当前取出的面值
+                total += coin;
+            }
+        }
+        // 返回找零方案
+        return change;
+    }
+
+    // 贪心算法: 背包问题
+    knapSackGreedy(capacity: number, weights: number[], values: number[]): number {
+        const n = values.length;
+        // 已装入背包的物品总重量
+        let load = 0;
+        // 已装入背包的物品总价值
+        let val = 0;
+        for (let i = 0; i < n && load < capacity; i++) {
+            // 物品可以完整的放入背包
+            if (weights[i] <= capacity - load) {
+                // 将物品的价值计入背包已装入物品的总价值
+                val += values[i];
+                // 将物品的重量计入背包已装入物品的总重量
+                load += weights[i];
+            } else {
+                // 物品无法完整的放入背包，计算能够装入部分的比例
+                const r = (capacity - load) / weights[i];
+                // 将计算出的物品价值计入背包已装入物品的总价值
+                val += r * values[i];
+                // 将物品的重量计入背包已装入物品的总重量
+                load += weights[i];
+            }
+        }
+
+        // 返回物品总价值
+        return val;
+    }
 }
