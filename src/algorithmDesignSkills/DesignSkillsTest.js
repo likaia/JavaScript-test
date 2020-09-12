@@ -25,3 +25,12 @@ const values = [3, 4, 5],
 
 // 背包容量为6时, 可以装物品1和物品2以及25%的物品3
 console.log("容量为6的背包其解决方案为：", designSkills.knapSackGreedy(capacity, weights, values));
+
+// 迷宫老鼠问题
+const RatResult = designSkills.ratInAmaze([
+    [1, 0, 0, 0],
+    [1, 1, 1, 1],
+    [0, 0, 1, 0],
+    [0, 1, 1, 1]
+]);
+console.log(RatResult);

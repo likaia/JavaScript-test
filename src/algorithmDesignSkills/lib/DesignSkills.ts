@@ -339,4 +339,65 @@ export class DesignSkills {
         // 返回物品总价值
         return { val: val, compose: compose };
     }
+
+    /**
+     *  回溯算法：迷宫老鼠问题
+     *
+     * @param maze 迷宫
+     */
+    ratInAmaze(maze: number[][]): number[][] | string {
+        // 解决方案
+        const solution: number[][] = [];
+        for (let i = 0; i < maze.length; i++) {
+            solution[i] = [];
+            for (let j = 0; j < maze[i].length; j++) {
+                solution[i][j] = 0;
+            }
+        }
+        console.log("初始化后的解决方案", solution);
+        // 寻找路径
+        if (this.findPath(0, 0, maze, solution)) {
+            // 返回解决方案
+            return solution;
+        }
+        // 无解
+        return "此迷宫无解";
+    }
+
+    // 寻找路径
+    findPath(x: number, y: number, maze: number[][], solution: number[][]): boolean {
+        const n = maze.length;
+        // 递归基准条件：老鼠走到了迷宫的尽头
+        if (x === n - 1 && y === n - 1) {
+            // 将最后一个位置标记为路径的一部分
+            solution[x][y] = 1;
+            return true;
+        }
+        // 判断老鼠能否安全移动到该位置
+        if (this.isSafe(maze, x, y)) {
+            // 该位置可以移动，将其标注为可移动
+            solution[x][y] = 1;
+            // 沿着迷宫的行移动
+            if (this.findPath(x + 1, y, maze, solution)) {
+                return true;
+            }
+            // 沿着迷宫的列移动
+            if (this.findPath(x, y + 1, maze, solution)) {
+                return true;
+            }
+            // 水平和垂直都无法移动，将这步路径标注为不可移动
+            solution[x][y] = 0;
+            // 回溯，即将当前层从递归栈中移除，尝试另一种解决方案
+            return false;
+        }
+        // 所有移动方案都尝试完毕，都无法移动，则退出当前递归
+        return false;
+    }
+
+    // 验证此位置是否能走
+    isSafe(maze: number[][], x: number, y: number): boolean {
+        const n = maze.length;
+        // x和y必须大于等于0且迷宫的第x行y列不能为0老鼠就可以走
+        return x >= 0 && y >= 0 && x < n && y < n && maze[x][y] !== 0;
+    }
 }
