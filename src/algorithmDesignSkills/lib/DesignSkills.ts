@@ -1,4 +1,5 @@
 export class DesignSkills {
+    UNASSIGNED = 0;
     /**
      * 最少硬币找零
      * @param coins 硬币面额
@@ -354,7 +355,7 @@ export class DesignSkills {
                 solution[i][j] = 0;
             }
         }
-        console.log("初始化后的解决方案", solution);
+
         // 寻找路径
         if (this.findPath(0, 0, maze, solution)) {
             // 返回解决方案
@@ -365,7 +366,7 @@ export class DesignSkills {
     }
 
     // 寻找路径
-    findPath(x: number, y: number, maze: number[][], solution: number[][]): boolean {
+    private findPath(x: number, y: number, maze: number[][], solution: number[][]): boolean {
         const n = maze.length;
         // 递归基准条件：老鼠走到了迷宫的尽头
         if (x === n - 1 && y === n - 1) {
@@ -374,7 +375,7 @@ export class DesignSkills {
             return true;
         }
         // 判断老鼠能否安全移动到该位置
-        if (this.isSafe(maze, x, y)) {
+        if (DesignSkills.isSafe(maze, x, y)) {
             // 该位置可以移动，将其标注为可移动
             solution[x][y] = 1;
             // 沿着迷宫的行移动
@@ -395,9 +396,139 @@ export class DesignSkills {
     }
 
     // 验证此位置是否能走
-    isSafe(maze: number[][], x: number, y: number): boolean {
+    private static isSafe(maze: number[][], x: number, y: number): boolean {
         const n = maze.length;
         // x和y必须大于等于0且迷宫的第x行y列不能为0老鼠就可以走
         return x >= 0 && y >= 0 && x < n && y < n && maze[x][y] !== 0;
+    }
+
+    /**
+     * 数独解题器
+     * 游戏规则：
+     *        1. 用数字1~9填满一个9*9的矩阵
+     *        2. 矩阵的每行每列都由1～9这九个数字组成，且不能重复
+     *        3. 矩阵还包含了3*3的小矩阵，同样需要用这9个数字填满，填充时其值所在的小矩阵中不能有重复的数字
+     *        4. 游戏开始前会提供一个数独矩阵，它填了部分数字，未填充部分用0表示
+     * @param matrix 数独矩阵
+     */
+    sudokuSolver(matrix: number[][]): number[][] | string {
+        if (this.solveSudoku(matrix)) {
+            return matrix;
+        }
+        return "此问题无解";
+    }
+
+    /**
+     * 解数独
+     * @param matrix 数独
+     * @private
+     */
+    private solveSudoku(matrix: number[][]) {
+        // 辅助变量用于描述数独的行和列
+        let row: number;
+        let col = 0;
+        // 检查格子是否为空
+        let checkBlankSpaces = false;
+        // 寻找空格子
+        for (row = 0; row < matrix.length; row++) {
+            for (col = 0; col < matrix[row].length; col++) {
+                // 检测到空格子，终止内层循环
+                if (matrix[row][col] === this.UNASSIGNED) {
+                    checkBlankSpaces = true;
+                    break;
+                }
+            }
+            // 格子为空终止外层循环
+            if (checkBlankSpaces) {
+                break;
+            }
+        }
+        // 格子不为空时终止递归
+        if (!checkBlankSpaces) {
+            return true;
+        }
+        // 为空格子填充数字，判断其是否满足数独的填充规则
+        for (let num = 1; num <= 9; num++) {
+            // 如果满足规则，就往空格子填充num
+            if (DesignSkills.MatrixIsSafe(matrix, row, col, num)) {
+                matrix[row][col] = num;
+                // 递归，继续寻找空格子，然后填充
+                if (this.solveSudoku(matrix)) {
+                    return true;
+                }
+                // 所有数字都尝试完后，仍然不满足则填充0
+                matrix[row][col] = this.UNASSIGNED;
+            }
+        }
+        // 回溯，即将返回到上一个递归栈
+        return false;
+    }
+
+    /**
+     * 校验当前值是否冲突
+     * @param matrix
+     * @param row
+     * @param col
+     * @param num
+     * @private
+     */
+    private static MatrixIsSafe(matrix: number[][], row: number, col: number, num: number): boolean {
+        // 当num的值不再当前行，不在当前列，不在3*3的小格子中时则表示num不冲突
+        return (
+            !DesignSkills.usedInRow(matrix, row, num) &&
+            !DesignSkills.usedInCol(matrix, col, num) &&
+            !DesignSkills.usedInBox(matrix, row - (row % 3), col - (col % 3), num)
+        );
+    }
+
+    /**
+     * 检测当前值是否在矩阵的指定行中
+     * @param matrix
+     * @param row
+     * @param num
+     * @private
+     */
+    private static usedInRow(matrix: number[][], row: number, num: number): boolean {
+        for (let col = 0; col < matrix.length; col++) {
+            if (matrix[row][col] === num) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 检测当前值是否在矩阵的指定列中
+     * @param matrix
+     * @param col
+     * @param num
+     * @private
+     */
+    private static usedInCol(matrix: number[][], col: number, num: number): boolean {
+        for (let row = 0; row < matrix.length; row++) {
+            if (matrix[row][col] === num) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 检测当前值是否在3*3的小矩阵中
+     * @param matrix
+     * @param boxStartRow
+     * @param boxStartCol
+     * @param num
+     * @private
+     */
+    private static usedInBox(matrix: number[][], boxStartRow: number, boxStartCol: number, num: number): boolean {
+        for (let row = 0; row < 3; row++) {
+            for (let col = 0; col < 3; col++) {
+                if (matrix[row + boxStartRow][col + boxStartCol] === num) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }
