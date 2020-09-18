@@ -90,7 +90,7 @@ export class ArrayRepeatedNumber {
      *  2. 如果数组中有重复元素，那么有些位置可能存在多个数字，有些位置可能没有数字
      *
      * 根据上述结论，我们可以得出下述实现思路:
-     *  1. 从头到尾遍历排序好的数组，存储第i号位置的元素，用m表示
+     *  1. 从头到尾遍历数组，存储第i号位置的元素，用m表示
      *  2. 如果m的值等于当前下标(i)，则继续遍历。
      *     否则就判断m的值是否等于数组下标为m处的值。
      *       如果等于代表重复将其返回。
@@ -134,5 +134,32 @@ export class ArrayRepeatedNumber {
             // 未找到
             return -1;
         }
+    }
+
+    /**
+     * 消除数组中的重复元素
+     *
+     * 规则：
+     *  1. 数组中元素类型为数字、字符串时，直接取出
+     *  2. 数组中元素类型为数组时，递归遍历查找数据类型为数字、字符串的元素
+     *  3. 丢弃其他类型的元素
+     * @param array 需要进行筛选的数组
+     * @param result 筛选出来的结果数组
+     */
+    delRepeatedElement<T>(array: T[] | T[][], result: Set<T> = new Set<T>()): T[] {
+        // 从头到尾遍历数组，根据规则筛选我们需要的数据
+        for (let i = 0; i < array.length; i++) {
+            // 数组中元素类型为数字或者字符串时就将其放进结果数组中
+            if (typeof array[i] === "number" || typeof array[i] === "string") {
+                result.add(<T>array[i]);
+            }
+            // 数组中元素类型为数组时，将其取出，然后递归
+            if (array[i] instanceof Array) {
+                // 以当前取出的数组元素为参数递归取出我们需要的数据
+                this.delRepeatedElement(<T[]>array[i], result);
+            }
+        }
+        // 将筛选出来的set集合解构为数组返回给调用者
+        return <T[]>[...result];
     }
 }

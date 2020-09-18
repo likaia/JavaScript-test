@@ -6,3 +6,5 @@ const result = arrayRepeatedNumber.getRepeated();
 if (result !== -1 && result != null) {
     console.log("数组中的任意一个重复数字为：" + result);
 }
+const a = arrayRepeatedNumber.delRepeatedElement([12, 6, 8, 9, 1, "aa", "ss", { aa: "22" }, [1, 5, 6, 7]]);
+console.log(a);
