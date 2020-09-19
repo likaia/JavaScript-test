@@ -5,7 +5,7 @@ import { HashMap } from "../../DictionaryTest/lib/HashMap.ts";
  * 寻找数组中的重复数字
  *
  * 规则：
- *  1. 给定一个长度为n的数组，数组中每个元素的取值范围为：0~n-1d
+ *  1. 给定一个长度为n的数组，数组中每个元素的取值范围为：0~n-1
  *  2. 数组中某些数字是重复的，但是不知道有哪些数字重复了，也不知道每个数字重复了几次
  *  3. 求数组中任意一个重复的数字
  */
@@ -161,5 +161,136 @@ export class ArrayRepeatedNumber {
         }
         // 将筛选出来的set集合解构为数组返回给调用者
         return <T[]>[...result];
+    }
+
+    /**
+     * 不修改数组找到重复的数字
+     *
+     * 规则:
+     *  1. 数组的长度为n+1
+     *  2. 数组内元素范围：1~n
+     *  3. 在不修改数组的前提下，找到数组内任意一个重复的数字
+     */
+
+    // 解法1：使用辅助数组解决
+    // 实现思路：
+    // 1. 创建一个数组长度为待处理数组长度+1的辅助数组
+    // 2. 遍历数组，以原数组i号位置的元素为下标，判断其辅助数组中的值是否为空
+    // 空间复杂度分析：需要多创建一个辅助数组，因此空间复杂度为O(n)
+    findRepeatedWithArray(): number {
+        // 创建一个数组长度为待处理数组长度+1的辅助数组
+        const result = new Array<number>(this.array.length + 1);
+        // 数组中的重复元素
+        let repeated = -1;
+        // 将待处理数组的每个元素按规则填充进辅助数组
+        for (let i = 0; i < this.array.length; i++) {
+            // 获取原数组i号位置的元素
+            const m = this.array[i];
+            // 如果辅助数组的m号位置的元素不为空就填充m进去
+            if (result[m] == null) {
+                result[m] = m;
+            } else {
+                // 重复元素被找到
+                repeated = this.array[i];
+                break;
+            }
+        }
+        // 返回找到的重复数字
+        return repeated;
+    }
+
+    // 解法2：用二分查找实现
+    /**
+     * 由于数组的长度是n+1,且其元素的取值范围又在1~n，那么数组中一定会有一个重复的元素
+     * 根据上述结论，我们可得出如下结论：
+     *  1. 把1~n的数字，从中间m处分开。
+     *  2. 分开后，前面一半为1~m，后面一半为m+1~n
+     *  3. 如果1～m的数字的数目超过m，那么这一半的区间里一定包含了重复的数字，否则另一个区间里一定包含了重复的数字
+     *  4. 继续把重复的区间一分为二，直到找到一个重复的数字
+     *
+     *  举例说明：
+     *  [1, 5, 2, 3, 4, 5, 7]
+     *  声明3个辅助变量：length = 7, start = 0, end = length - 1 = 6
+     *  第1轮次分割，如果end >= start就执行下述过程：
+     *    1. middle = (start + end) / 2 // 6 / 2 = 3
+     *    2. count = 3
+     *    3. end !== start // 6 !==0
+     *    4. count > (middle - start + 1) // 3 - 0 + 1 = 3 false
+     *    5. start = middle + 1 // 4
+     *  第2次分割，start = 4, end = 6
+     *      1. middle = 5
+     *      2. count = 3
+     *      3. end !== start // 6 !== 4
+     *      4. count > (middle - start + 1) / 2 // 5 - 4 + 1 = 2 true
+     *      5. end = middle // 5
+     *  第3次分割，start = 4, end = 5
+     *      1. middle = 4
+     *      2. count = 1
+     *      3. end !== start // 5 !== 4
+     *      4. count > (middle - start + 1) / 2 // 4 - 4 + 1 = 1 false
+     *      5. start = middle + 1 // 5
+     *  第4次分割，start = 5, end = 5
+     *      1. middle = 5
+     *      2. count = 2
+     *      3. end == start, count = 2 // return start
+     *
+     *  时间复杂度分析：假设输入长度为n的数组，那么计算出现次数的函数需要被调用O(logn)次，每次需要O(n)的空间，因此总的时间复杂度为O(nlogn)
+     *  空间复杂度分析：没有声明额外的辅助变量，因此空间复杂度为O(1)
+     *
+     *  这种解法由于二分查找的缘故，他只能找到数组中的某一个重复数字，不能找到所有的重复数字。
+     *  相比解法1而言，它的空间复杂度降低了，但是时间复杂度却提高了。
+     */
+    findRepeated(): number {
+        const length = this.array.length;
+        let start = 0;
+        let end = length - 1;
+        while (end >= start) {
+            // 计算中间值
+            const middle = Math.floor((start + end) / 2);
+            // 计算start~middle的出现次数
+            const count = ArrayRepeatedNumber.countRange(this.array, length, start, middle);
+            if (end === start) {
+                // 基数的值大于1，代表找到了重复的值，将其返回
+                if (count > 1) {
+                    // 重复值找到，将其返回
+                    return start;
+                } else {
+                    // 跳出本次循环
+                    break;
+                }
+            }
+
+            if (count > middle - start + 1) {
+                // 重复的元素在中间值的左侧
+                end = middle;
+            } else {
+                // 重复的元素在中间值的右侧
+                start = middle + 1;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * 计算出现次数
+     * @param numbers 要计算的数组
+     * @param length 要计算数组的长度
+     * @param start 开始位置
+     * @param end 结束位置
+     * @private
+     */
+    private static countRange(numbers: number[], length: number, start: number, end: number) {
+        if (numbers == null) {
+            return 0;
+        }
+
+        let count = 0;
+        for (let i = 0; i < length; i++) {
+            // 数组的元素必须在start～end的区间内
+            if (numbers[i] >= start && numbers[i] <= end) {
+                count++;
+            }
+        }
+        return count;
     }
 }
