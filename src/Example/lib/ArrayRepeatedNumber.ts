@@ -293,4 +293,142 @@ export class ArrayRepeatedNumber {
         }
         return count;
     }
+
+    /**
+     * 二维数组中的查找
+     *
+     * 规则：
+     *  1. 在一个二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。
+     *  2. 输入一个整数，判断其是否在二维素组中
+     *
+     * 例子：
+     *     [
+     *       [1, 2, 8, 9],
+     *       [2, 4, 9, 12],
+     *       [4, 7, 10, 13]
+     *       [6, 8, 11, 15]
+     *     ]
+     *    7在二维数组的中的索引：[2][1]
+     *
+     *  实现思路：
+     *  1. 从数组的右上角开始选数字，比较选中的数字与要查找的数字的大小。
+     *  2. 如果选中的数字等于要查找的数字，表示值已找到，返回true
+     *  3. 如果选中的数字大于要查找的数字，表示要查找的数字在选中的数字的左方，将当前列从查找范围内移除
+     *  4. 如果选中的数字小于要查找的数字，表示要查找的数字在选中的数字的下方，将当前行从查找范围内移除
+     *
+     *  举例说明：
+     *  1. 上述例子中，查找范围的右上角数字为9
+     *  2. 9 > 7，将其所在列从查找范围内移除，剩余的查找范围：
+     *     [
+     *       [1, 2, 8],
+     *       [2, 4, 9],
+     *       [4, 7, 10],
+     *       [6, 8, 11]
+     *     ]
+     *     [
+     *       [1, 2, 4, 6],
+     *       [2, 4, 7, 8],
+     *       [8, 9, 10, 11]
+     *     ]
+     *    剩余查找范围中，其右上角的数字为8
+     *    8 > 7，将其所在列从查找范围内移除，剩余的查找范围：
+     *     [
+     *       [1, 2],
+     *       [2, 4],
+     *       [4, 7],
+     *       [6, 8]
+     *      ]
+     *    剩余查找范围中，其右上角的数字为2
+     *    2 < 7，将其所在行从查找范围内移除，剩余的查找范围：
+     *     [
+     *       [2, 4],
+     *       [4, 7],
+     *       [6, 8]
+     *     ]
+     *    剩余的查找范围中，其右上角的数字为4
+     *    4 < 7，将其所在行从查找范围内移除，剩余的查找范围：
+     *     [
+     *       [4, 7],
+     *       [6, 8]
+     *     ]
+     *    剩余的查找范围中，其右上角的数字为7
+     *    7 = 7，返回true。
+     *
+     */
+    findNumberWithTDM(array: number[][], findValue: number): number | boolean {
+        // 判断参数是否满足规则
+        if (!Array.isArray(array[0])) {
+            return -1;
+        }
+
+        // 列二维数组，用于接收当前二维数组行与列互换后的结果
+        const colValArray: number[][] = [];
+        // 获取二维数组的列数据
+        for (let i = 0; i < array[0].length; i++) {
+            // 获取当前遍历到的列，将其放进新的二维数组中
+            colValArray.push(this.getColVal(array, i));
+        }
+
+        // 判断传入的数组和列数据二维数组是否满足题目要求
+        if (!ArrayRepeatedNumber.isFindTDMArray(array) || !ArrayRepeatedNumber.isFindTDMArray(colValArray)) {
+            // 不满足
+            return -1;
+        }
+        // 寻找右上角的值并判断。
+        // row为行默认为二维数组的第0行，
+        // col为列默认为二维数组第0行的最后一列
+        let row = 0;
+        let col = array[0].length - 1;
+
+        // 辅助变量，告知调用者要找的值是否找到
+        let found = false;
+
+        // 如果当前查找范围有效就执行下述代码
+        while (row < array.length && col >= 0) {
+            // 如果右上角的值等于要找的值，代表元素被找到，将其返回，终止循环
+            if (array[row][col] === findValue) {
+                found = true;
+                break;
+            } else if (array[row][col] > findValue) {
+                // 如果右上角的值大于要找的值，代表要找的值在当前值的左侧，将列自减1
+                col--;
+            } else {
+                // 否则，代表要找的值在当前值的右侧，将行自增1
+                row++;
+            }
+        }
+
+        // 未找到
+        return found;
+    }
+
+    /**
+     * 判断参数是否满足二维数组查找的条件
+     * @param array 需要进行判断的数组
+     */
+    private static isFindTDMArray(array: number[][]): boolean {
+        for (let i = 0; i < array.length; i++) {
+            for (let j = 0; j < array[i].length - 1; j++) {
+                if (array[i][j + 1] < array[i][j]) {
+                    // 传入的数组不满足条件：每一行必须按照从左到右递增的顺序排序
+                    return false;
+                }
+            }
+        }
+        // 满足
+        return true;
+    }
+
+    /**
+     * 获取二维数组的指定列数据
+     * @param array 被获取的数组
+     * @param index 要获取的列
+     */
+    getColVal(array: number[][], index: number): number[] {
+        const colVal: number[] = [];
+        for (let i = 0; i < array.length; i++) {
+            colVal.push(array[i][index]);
+        }
+        return colVal;
+    }
 }
