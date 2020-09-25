@@ -56,7 +56,7 @@ export default class LinkedList<T> {
                 this.head = current.next;
             } else {
                 // 获取目标参数上一个结点
-                let previous = this.getElementAt(index - 1);
+                const previous = this.getElementAt(index - 1);
                 // 当前结点指向目标结点
                 current = previous.next;
                 /**

@@ -1,11 +1,22 @@
 import { ArrayRepeatedNumber } from "./lib/ArrayRepeatedNumber.ts";
 import { StringOperate } from "./lib/StringOperate.ts";
+import { LinkedListOperation } from "./lib/LinkedListOperation.ts";
+import LinkedList from "../LinkedListTest/lib/LinkedList.ts";
 
 // 获取数组中任意一个重复数字
 const arrayRepeatedNumber = new ArrayRepeatedNumber([1, 5, 2, 3, 4, 5, 7]);
 // 字符串操作
 const stringOperate = new StringOperate();
-
+// 链表操作
+const linkedList = new LinkedList();
+linkedList.push("a");
+linkedList.push("f");
+linkedList.push("r");
+linkedList.push("t");
+linkedList.push("y");
+linkedList.push("p");
+linkedList.push("k");
+const linkedOperate = new LinkedListOperation(linkedList);
 const result = arrayRepeatedNumber.findRepeated();
 if (result !== -1 && result != null) {
     console.log("数组中的任意一个重复数字为：" + result);
@@ -36,3 +47,6 @@ const result4 = stringOperate.replaceSpacesWithString(str, "20%");
 
 console.log(result3);
 console.log(result4);
+
+// 从尾到头打印链表
+linkedOperate.reverseOrderPrint();
