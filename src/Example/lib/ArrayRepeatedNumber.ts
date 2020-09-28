@@ -431,4 +431,34 @@ export class ArrayRepeatedNumber {
         }
         return colVal;
     }
+
+    /**
+     * 字符串或数组相邻元素去重
+     * @param str 需要执行操作的字符串或数组
+     *
+     * @return 执行去重后操作后数组
+     */
+    uniqueInOrder(str: string | number[]): string[] | number[] {
+        // 结果数组，存放去重后的字符串
+        const strResult: string[] = [];
+        const numResult: number[] = [];
+
+        // 比对相邻元素，如果不相等就将其放进结果数组中
+        for (let i = 0; i < str.length; i++) {
+            // 参数为number类型数组
+            if (typeof str[i] === "number" && str[i] !== str[i + 1]) {
+                numResult.push(<number>str[i]);
+            }
+            // 参数为字符串数组
+            if (typeof str[i] === "string" && str[i] !== str[i + 1]) {
+                strResult.push(<string>str[i]);
+            }
+        }
+
+        // 根据参数类型返回对应的结果数组
+        if (typeof str === "string") {
+            return strResult;
+        }
+        return numResult;
+    }
 }

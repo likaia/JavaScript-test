@@ -9,7 +9,7 @@ export class Node<K> {
         this.right = undefined;
     }
 
-    toString() {
+    toString(): string {
         return `${this.key}`;
     }
 }

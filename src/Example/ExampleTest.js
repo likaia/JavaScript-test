@@ -2,6 +2,7 @@ import { ArrayRepeatedNumber } from "./lib/ArrayRepeatedNumber.ts";
 import { StringOperate } from "./lib/StringOperate.ts";
 import { LinkedListOperation } from "./lib/LinkedListOperation.ts";
 import LinkedList from "../LinkedListTest/lib/LinkedList.ts";
+import { TreeOperate } from "./lib/TreeOperate.ts";
 
 // 获取数组中任意一个重复数字
 const arrayRepeatedNumber = new ArrayRepeatedNumber([1, 5, 2, 3, 4, 5, 7]);
@@ -9,6 +10,8 @@ const arrayRepeatedNumber = new ArrayRepeatedNumber([1, 5, 2, 3, 4, 5, 7]);
 const stringOperate = new StringOperate();
 // 链表操作
 const linkedList = new LinkedList();
+// 树操作
+const treeOperate = new TreeOperate();
 linkedList.push("a");
 linkedList.push("f");
 linkedList.push("r");
@@ -50,3 +53,9 @@ console.log(result4);
 
 // 从尾到头打印链表
 linkedOperate.reverseOrderPrint();
+
+// 字符串相邻元素去重
+const result5 = arrayRepeatedNumber.uniqueInOrder("AsAssAAa");
+console.log(result5);
+const result6 = treeOperate.buildBinaryTree([8, 6, 3, 7, 13, 9, 15], [3, 6, 7, 8, 9, 13, 15]);
+console.log(result6);
