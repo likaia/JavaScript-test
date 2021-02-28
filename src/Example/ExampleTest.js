@@ -3,6 +3,7 @@ import { StringOperate } from "./lib/StringOperate.ts";
 import { LinkedListOperation } from "./lib/LinkedListOperation.ts";
 import LinkedList from "../LinkedListTest/lib/LinkedList.ts";
 import { TreeOperate } from "./lib/TreeOperate.ts";
+import BinarySearchTree from "../BinarySearchTreeTest/lib/BinarySearchTree.ts";
 
 // 获取数组中任意一个重复数字
 const arrayRepeatedNumber = new ArrayRepeatedNumber([1, 5, 2, 3, 4, 5, 7]);
@@ -59,3 +60,15 @@ const result5 = arrayRepeatedNumber.uniqueInOrder("AsAssAAa");
 console.log(result5);
 const result6 = treeOperate.buildBinaryTree([8, 6, 3, 7, 13, 9, 15], [3, 6, 7, 8, 9, 13, 15]);
 console.log(result6);
+
+// 寻找二叉树的下一个节点
+const tree = new BinarySearchTree();
+tree.insert(8);
+tree.insert(6);
+tree.insert(3);
+tree.insert(7);
+tree.insert(13);
+tree.insert(9);
+tree.insert(15);
+const nextNode = treeOperate.findBinaryTreeNextNode(tree, 3);
+console.log("3的下一个节点", nextNode);
