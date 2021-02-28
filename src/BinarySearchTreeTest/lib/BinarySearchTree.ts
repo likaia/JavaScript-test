@@ -137,7 +137,7 @@ export default class BinarySearchTree<T> {
             return this.searchNode(<Node<T>>node.right, key);
         } else {
             // 节点已找到
-            return true;
+            return node;
         }
     }
 
