@@ -32,7 +32,7 @@ export default class BinarySearchTree<T> {
         if (this.compareFn(key, node.key) === Compare.LESS_THAN) {
             if (node.left == null) {
                 // 当前节点的左子树为null直接插入
-                node.left = new Node(key);
+                node.left = new Node(key, node);
             } else {
                 // 从当前节点(左子树)向下递归,找到null位置将其插入
                 this.insertNode(node.left, key);
@@ -40,7 +40,7 @@ export default class BinarySearchTree<T> {
         } else {
             if (node.right == null) {
                 // 当前节点的右子树为null直接插入
-                node.right = new Node(key);
+                node.right = new Node(key, node);
             } else {
                 // 从当前节点(右子树)向下递归，找到null位置将其插入
                 this.insertNode(node.right, key);

@@ -4,9 +4,11 @@
 export class Node<K> {
     public left: Node<K> | undefined;
     public right: Node<K> | undefined;
-    constructor(public key: K) {
+    public parent: Node<K> | undefined;
+    constructor(public key: K, parent?: Node<K>) {
         this.left = undefined;
         this.right = undefined;
+        this.parent = parent;
     }
 
     toString(): string {
