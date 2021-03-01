@@ -23,9 +23,12 @@ export default class StacksAndQueues {
     }
     // 出队
     dequeue() {
-        while (!this.firstStacks.isEmpty()) {
-            this.secondStacks.push(this.firstStacks.pop());
+        if (this.secondStacks.isEmpty()) {
+            while (!this.firstStacks.isEmpty()) {
+                this.secondStacks.push(this.firstStacks.pop());
+            }
         }
+
         if (!this.secondStacks.isEmpty()) {
             // 出栈2
             return this.secondStacks.pop();
