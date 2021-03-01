@@ -50,7 +50,7 @@ export default class StacksAndQueues {
         // 队列2为空
         if (this.secondQueues.isEmpty()) {
             while (this.firstQueues.size() != 1) {
-                // 将队列1除队首外的元素放进队列2
+                // 将队列1除队尾外的元素放进队列2
                 this.secondQueues.enqueue(this.firstQueues.dequeue());
             }
         }
