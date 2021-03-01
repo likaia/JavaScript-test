@@ -4,6 +4,7 @@ import { LinkedListOperation } from "./lib/LinkedListOperation.ts";
 import LinkedList from "../LinkedListTest/lib/LinkedList.ts";
 import { TreeOperate } from "./lib/TreeOperate.ts";
 import BinarySearchTree from "../BinarySearchTreeTest/lib/BinarySearchTree.ts";
+import StacksAndQueues from "./lib/StacksAndQueues.ts";
 
 // 获取数组中任意一个重复数字
 const arrayRepeatedNumber = new ArrayRepeatedNumber([1, 5, 2, 3, 4, 5, 7]);
@@ -72,3 +73,20 @@ tree.insert(9);
 tree.insert(15);
 const nextNode = treeOperate.findBinaryTreeNextNode(tree, 3);
 console.log("3的下一个节点", nextNode);
+
+// 用栈实现队列
+const stacksAndQueues = new StacksAndQueues();
+stacksAndQueues.enqueue(3);
+stacksAndQueues.enqueue(9);
+stacksAndQueues.enqueue(12);
+console.log("出队", stacksAndQueues.dequeue());
+console.log("出队", stacksAndQueues.dequeue());
+console.log("出队", stacksAndQueues.dequeue());
+console.log();
+// 队列实现栈
+stacksAndQueues.stackPush(3);
+stacksAndQueues.stackPush(9);
+stacksAndQueues.stackPush(12);
+console.log("出栈", stacksAndQueues.stackPop());
+console.log("出栈", stacksAndQueues.stackPop());
+console.log("出栈", stacksAndQueues.stackPop());
