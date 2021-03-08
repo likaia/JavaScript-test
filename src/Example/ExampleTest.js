@@ -5,6 +5,7 @@ import LinkedList from "../LinkedListTest/lib/LinkedList.ts";
 import { TreeOperate } from "./lib/TreeOperate.ts";
 import BinarySearchTree from "../BinarySearchTreeTest/lib/BinarySearchTree.ts";
 import StacksAndQueues from "./lib/StacksAndQueues.ts";
+import Fibonacci from "./lib/Fibonacci.ts";
 
 // 获取数组中任意一个重复数字
 const arrayRepeatedNumber = new ArrayRepeatedNumber([1, 5, 2, 3, 4, 5, 7]);
@@ -94,3 +95,7 @@ stacksAndQueues.stackPush(12);
 console.log("出栈", stacksAndQueues.stackPop());
 console.log("出栈", stacksAndQueues.stackPop());
 console.log("出栈", stacksAndQueues.stackPop());
+
+const fibonacci = new Fibonacci(40);
+console.log("10号位置的斐波那契数为(自上而下解法)", fibonacci.bottomUp());
+console.log("10号位置的斐波那契数为(递归解法)", fibonacci.recursion());
