@@ -50,8 +50,9 @@ const peoples: string[] = [
     "wi",
     "褚俊"
 ];
+
+console.log("开始抽奖，参与人数: ", peoples.length);
 const lottery = new Lottery(peoples, 1);
 lottery.start();
-console.log("开始抽奖，参与人数: ", peoples.length);
 console.log(lottery.getResult());
 console.log("抽奖结束");
