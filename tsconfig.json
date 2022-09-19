@@ -5,7 +5,9 @@
     "compilerOptions": {
         "lib": [
             "esnext",
-            "dom"
+            "dom",
+            "dom.iterable",
+            "scripthost"
         ],
         "outDir": "./dist/ts",
         "target": "es6",
