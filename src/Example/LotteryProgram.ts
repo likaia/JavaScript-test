@@ -38,11 +38,18 @@ const peoples: string[] = [
     "35",
     "36",
     "37",
-    "38"
+    "38",
+    "39",
+    "40",
+    "41",
+    "42",
+    "43",
+    "44",
+    "45"
 ];
 
 console.log("开始抽奖，参与人数: ", peoples.length);
-const lottery = new Lottery(peoples, 3);
+const lottery = new Lottery(peoples, 4);
 lottery.start();
 setTimeout(() => {
     console.log(lottery.getResult());
